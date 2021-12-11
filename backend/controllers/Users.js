@@ -1,4 +1,5 @@
-const { insert, loginUser } = require("../services/Users");
+const { insert, loginUser, getUserById } = require("../services/Users");
+const teamService = require("../services/Teams");
 const httpStatus = require("http-status");
 
 const {
@@ -32,8 +33,17 @@ const login = async (req, res) => {
     return res.status(httpStatus.NOT_FOUND).send(error.message);
   }
 };
+
+const getPlayerTeam = async (req, res) => {
+  const user = await getUserById(req.user?._id);
+  console.log(user.teamId);
+  const team = await teamService.findTeamById(user.teamId);
+  res.status(httpStatus.OK).send(team);
+};
+
 module.exports = {
   index,
   create,
   login,
+  getPlayerTeam,
 };

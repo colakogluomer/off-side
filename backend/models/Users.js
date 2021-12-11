@@ -5,6 +5,10 @@ const UserSchema = new mongoose.Schema(
     password: String,
     email: String,
     profileImage: String,
+    teamId: {
+      type: mongoose.Types.ObjectId,
+      ref: "team",
+    },
   },
   { timestamps: true, versionKey: false }
 );

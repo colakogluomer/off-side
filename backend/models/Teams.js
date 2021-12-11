@@ -3,6 +3,16 @@ const logger = require("../scripts/logger/Teams");
 const TeamSchema = new mongoose.Schema(
   {
     name: String,
+    playersId: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "user",
+      },
+    ],
+    founder: {
+      type: mongoose.Types.ObjectId,
+      ref: "user",
+    },
   },
   { timestamps: true, versionKey: false }
 );
