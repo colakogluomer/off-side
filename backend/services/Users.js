@@ -14,12 +14,18 @@ const getUserById = (id) => {
   });
 };
 const modify = async (data, id) => {
-  console.log(data + "HEYYYYYYYY");
+  console.log(data, id);
   return await User.findByIdAndUpdate(id, data, { new: true });
 };
+
+const modifyOne = async (condition, data) => {
+  return await User.findOneAndUpdate(condition, data, { new: true });
+};
+
 module.exports = {
   insert,
   loginUser,
   getUserById,
   modify,
+  modifyOne,
 };

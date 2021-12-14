@@ -1,7 +1,14 @@
-const { insert, loginUser, getUserById } = require("../services/Users");
+const {
+  insert,
+  loginUser,
+  getUserById,
+  modifyOne,
+  modify,
+} = require("../services/Users");
 const teamService = require("../services/Teams");
 const httpStatus = require("http-status");
-
+const uuid = require("uuid");
+const eventEmitter = require("../scripts/events/eventEmitter");
 const {
   passwordToHash,
   generateAccessToken,
@@ -36,9 +43,32 @@ const login = async (req, res) => {
 
 const getPlayerTeam = async (req, res) => {
   const user = await getUserById(req.user?._id);
-  console.log(user.teamId);
   const team = await teamService.findTeamById(user.teamId);
   res.status(httpStatus.OK).send(team);
+};
+
+const resetPassword = async (req, res) => {
+  const newPassword = uuid.v4()?.split("-")[0] || `usr-${new Date().getTime()}`;
+  const updatedUser = await modifyOne(
+    { email: req.body.email },
+    { password: passwordToHash(newPassword) }
+  );
+  if (!updatedUser)
+    return res.status(httpStatus.NOT_FOUND).send({ error: "no user" });
+  eventEmitter.emit("sendEmail", {
+    to: updatedUser.email, // list of receivers
+    subject: "Reset Password", // Subject line
+    html: `Your reset password process is done <br/> New Password: <b> ${newPassword} </b>`, // html body
+  });
+  res.status(httpStatus.OK).send({
+    message: "We have just sent all of details to your email.",
+  });
+};
+
+const update = async (req, res) => {
+  console.log(req.body);
+  const updatedUser = await modify(req.body, req.user?._id);
+  res.status(httpStatus.OK).send(updatedUser);
 };
 
 module.exports = {
@@ -46,4 +76,6 @@ module.exports = {
   create,
   login,
   getPlayerTeam,
+  resetPassword,
+  update,
 };

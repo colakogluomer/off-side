@@ -15,7 +15,7 @@ const create = async (req, res) => {
   const team = await insert(req.body);
 
   const user = await userService.modify({ teamId: team._id }, req.user._id);
-  console.log(user);
+
   res.status(httpStatus.CREATED).send(team);
 };
 
