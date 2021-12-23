@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/pages/match/map_test.dart';
 
 class MatchPage extends StatelessWidget {
   const MatchPage({Key? key}) : super(key: key);
@@ -9,9 +10,15 @@ class MatchPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Match page'),
       ),
-      body: const Center(
-        child: Text('Match page'),
-      ),
+      body: Center(
+          child: ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const MapTest()),
+                );
+              },
+              child: const Text("Map test"))),
     );
   }
 }
