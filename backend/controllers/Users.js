@@ -66,7 +66,6 @@ const resetPassword = async (req, res) => {
 };
 
 const update = async (req, res) => {
-  console.log(req.body);
   const updatedUser = await modify(req.body, req.user?._id);
   res.status(httpStatus.OK).send(updatedUser);
 };

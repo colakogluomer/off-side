@@ -14,7 +14,6 @@ const getUserById = (id) => {
   });
 };
 const modify = async (data, id) => {
-  console.log(data, id);
   return await User.findByIdAndUpdate(id, data, { new: true });
 };
 
