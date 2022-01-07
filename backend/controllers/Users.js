@@ -1,9 +1,11 @@
 const {
   insert,
+  findAll,
   loginUser,
   getUserById,
   modifyOne,
   modify,
+  deleteUser,
 } = require("../services/Users");
 const teamService = require("../services/Teams");
 const httpStatus = require("http-status");
@@ -14,9 +16,11 @@ const {
   generateAccessToken,
   generateRefreshToken,
 } = require("../scripts/utils/helper");
+const path = require("path");
 
-const index = (req, res) => {
-  res.status(200).send("User");
+const getAll = async (req, res) => {
+  const users = await findAll();
+  res.status(httpStatus.CREATED).send(users);
 };
 const create = async (req, res) => {
   req.body.password = passwordToHash(req.body.password);
@@ -70,11 +74,37 @@ const update = async (req, res) => {
   res.status(httpStatus.OK).send(updatedUser);
 };
 
+const changePassword = async (req, res) => {
+  req.body.password = passwordToHash(req.body.password);
+  const updatedUser = await modify(req.body, req.user?._id);
+  res.status(httpStatus.OK).send(updatedUser);
+};
+
+const remove = async (req, res) => {
+  const deletedUser = await deleteUser(req.params?.id);
+  res.status(httpStatus.OK).send(deletedUser);
+};
+
+const updateProfileImage = async (req, res) => {
+  const extension = path.extname(req.files.profileImage.name);
+  const fileName = `${req?.user._id}${extension}`;
+  const folder = path.join(__dirname, "../", "uploads/users", fileName);
+
+  req.files.profileImage.mv(folder);
+
+  console.log(req.user._id);
+  const updatedUser = await modify({ profileImage: fileName }, req.user._id);
+  res.status(httpStatus.OK).send(updatedUser);
+};
+
 module.exports = {
-  index,
+  changePassword,
+  getAll,
   create,
   login,
   getPlayerTeam,
   resetPassword,
   update,
+  remove,
+  updateProfileImage,
 };
