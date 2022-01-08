@@ -19,13 +19,11 @@ const getAll = async (req, res) => {
 };
 const create = async (req, res) => {
   req.body.founder = req.user;
-  if (!Array.isArray(req.body.playersId)) {
-    req.body.playersId = [];
-  }
-  req.body.playersId.push(req.user);
-
+  const user = await userService.getUserById(req.user?._id);
   const team = await insert(req.body);
-  await userService.modify({ teamId: team._id }, req.user._id);
+  team.playersId.push(user);
+  await team.save();
+  await userService.modify({ teamId: team }, req.user._id);
 
   res.status(httpStatus.CREATED).send(team);
 };

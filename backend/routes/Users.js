@@ -14,6 +14,7 @@ const {
   update,
   remove,
   updateProfileImage,
+  leaveTeam,
 } = require("../controllers/Users");
 
 router.get("/", getAll);
@@ -33,5 +34,5 @@ router
   .post(authenticate, validate(schemas.changePassword), changePassword);
 
 router.route("/update-profile-image").post(authenticate, updateProfileImage);
-
+router.route("/leave-team").patch(authenticate, leaveTeam);
 module.exports = router;

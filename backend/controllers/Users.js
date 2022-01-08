@@ -97,6 +97,19 @@ const updateProfileImage = async (req, res) => {
   res.status(httpStatus.OK).send(updatedUser);
 };
 
+const leaveTeam = async (req, res) => {
+  const user = await getUserById(req.user?._id);
+
+  const team = await teamService.findTeamById(req.body.teamId);
+
+  user.teamId = undefined;
+
+  team.playersId = team.playersId.filter((id) => id.toString() != user._id);
+  await user.save();
+  await team.save();
+  res.status(httpStatus.OK).send(team);
+};
+
 module.exports = {
   changePassword,
   getAll,
@@ -107,4 +120,5 @@ module.exports = {
   update,
   remove,
   updateProfileImage,
+  leaveTeam,
 };
