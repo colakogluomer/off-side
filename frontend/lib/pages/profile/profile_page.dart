@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/pages/login.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -9,9 +10,15 @@ class ProfilePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('ProfilePage'),
       ),
-      body: const Center(
-        child: Text('ProfilePage'),
-      ),
+      body: Center(
+          child: ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginScreen()),
+                );
+              },
+              child: const Text("Login"))),
     );
   }
 }
