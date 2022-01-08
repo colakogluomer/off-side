@@ -43,7 +43,7 @@ android {
 
     defaultConfig {
         applicationId "com.offside.app"
-        minSdkVersion 16
+        minSdkVersion 18
         targetSdkVersion 31
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
