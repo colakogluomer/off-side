@@ -12,9 +12,7 @@ Team _$TeamFromJson(Map<String, dynamic> json) => Team(
       playerIds: (json['playersId'] as List<dynamic>)
           .map((e) => User.fromJson(e as Map<String, dynamic>))
           .toList(),
-      founder: json['founder'] == null
-          ? null
-          : User.fromJson(json['founder'] as Map<String, dynamic>),
+      founder: User.fromJson(json['founder'] as Map<String, dynamic>),
       createdAt: json['createdAt'] == null
           ? null
           : DateTime.parse(json['createdAt'] as String),

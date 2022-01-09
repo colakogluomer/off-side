@@ -10,7 +10,7 @@ class Team {
   String name;
   @JsonKey(name: 'playersId')
   List<User> playerIds;
-  User? founder;
+  User founder;
   DateTime? createdAt;
   DateTime? updatedAt;
 
@@ -25,9 +25,4 @@ class Team {
 
   factory Team.fromJson(Map<String, dynamic> json) => _$TeamFromJson(json);
   Map<String, dynamic> toJson() => _$TeamToJson(this);
-
-  @override
-  String toString() {
-    return toJson().toString();
-  }
 }
