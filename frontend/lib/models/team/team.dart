@@ -6,7 +6,7 @@ part 'team.g.dart';
 @JsonSerializable()
 class Team {
   @JsonKey(name: '_id')
-  String id;
+  String? id;
   String name;
   @JsonKey(name: 'playersId')
   List<User> playerIds;
@@ -15,7 +15,7 @@ class Team {
   DateTime? updatedAt;
 
   Team({
-    required this.id,
+    this.id,
     required this.name,
     required this.playerIds,
     required this.founder,

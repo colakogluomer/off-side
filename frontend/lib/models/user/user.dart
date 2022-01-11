@@ -6,7 +6,7 @@ part 'user.g.dart';
 @JsonSerializable()
 class User {
   @JsonKey(name: '_id')
-  String id;
+  String? id;
   String? email;
   String name;
   String? profileImage;
@@ -15,7 +15,7 @@ class User {
   DateTime? updatedAt;
 
   User({
-    required this.id,
+    this.id,
     required this.email,
     required this.name,
     this.profileImage,
