@@ -1,13 +1,5 @@
-const {
-  insert,
-  findAll,
-  loginUser,
-  getUserById,
-  modifyOne,
-  modify,
-  deleteUser,
-} = require("../services/Users");
-const teamService = require("../services/Teams");
+const Users = require("../services/Users");
+const Teams = require("../services/Teams");
 const httpStatus = require("http-status");
 const uuid = require("uuid");
 const eventEmitter = require("../scripts/events/eventEmitter");
@@ -19,18 +11,18 @@ const {
 const path = require("path");
 
 const getAll = async (req, res) => {
-  const users = await findAll();
+  const users = await Users.load();
   res.status(httpStatus.CREATED).send(users);
 };
 const create = async (req, res) => {
   req.body.password = passwordToHash(req.body.password);
-  const response = await insert(req.body);
+  const response = await Users.insert(req.body);
   res.status(httpStatus.CREATED).send(response);
 };
 const login = async (req, res) => {
   try {
     req.body.password = passwordToHash(req.body.password);
-    const user = await loginUser(req.body);
+    const user = await Users.getOne(req.body);
     if (!user) throw Error("wrong email or password");
     currentUser = {
       ...user.toObject(),
@@ -46,14 +38,14 @@ const login = async (req, res) => {
 };
 
 const getPlayerTeam = async (req, res) => {
-  const user = await getUserById(req.user?._id);
-  const team = await teamService.findTeamById(user.teamId);
+  const user = await Users.get(req.user?._id);
+  const team = await Teams.get(user.teamId);
   res.status(httpStatus.OK).send(team);
 };
 
 const resetPassword = async (req, res) => {
   const newPassword = uuid.v4()?.split("-")[0] || `usr-${new Date().getTime()}`;
-  const updatedUser = await modifyOne(
+  const updatedUser = await Users.updateOne(
     { email: req.body.email },
     { password: passwordToHash(newPassword) }
   );
@@ -70,18 +62,18 @@ const resetPassword = async (req, res) => {
 };
 
 const update = async (req, res) => {
-  const updatedUser = await modify(req.body, req.user?._id);
+  const updatedUser = await Users.update(req.user?._id, req.body);
   res.status(httpStatus.OK).send(updatedUser);
 };
 
 const changePassword = async (req, res) => {
   req.body.password = passwordToHash(req.body.password);
-  const updatedUser = await modify(req.body, req.user?._id);
+  const updatedUser = await Users.update(req.user?._id, req.body);
   res.status(httpStatus.OK).send(updatedUser);
 };
 
 const remove = async (req, res) => {
-  const deletedUser = await deleteUser(req.params?.id);
+  const deletedUser = await Users.remove(req.params?.id);
   res.status(httpStatus.OK).send(deletedUser);
 };
 
@@ -93,14 +85,16 @@ const updateProfileImage = async (req, res) => {
   req.files.profileImage.mv(folder);
 
   console.log(req.user._id);
-  const updatedUser = await modify({ profileImage: fileName }, req.user._id);
+  const updatedUser = await Users.update(req.user._id, {
+    profileImage: fileName,
+  });
   res.status(httpStatus.OK).send(updatedUser);
 };
 
 const leaveTeam = async (req, res) => {
-  const user = await getUserById(req.user?._id);
+  const user = await Users.getUserPopulate(req.user?._id);
 
-  const team = await teamService.findTeamById(req.body.teamId);
+  const team = await Teams.get(user.teamId);
 
   user.teamId = undefined;
 

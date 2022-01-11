@@ -28,7 +28,7 @@ router
   .route("/reset-password")
   .post(validate(schemas.resetPassword), resetPassword);
 
-router.route("/:id").delete(/*authenticate,*/ remove);
+router.route("/:id").delete(authenticate, remove);
 router
   .route("/change-password")
   .post(authenticate, validate(schemas.changePassword), changePassword);
