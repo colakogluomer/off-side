@@ -29,9 +29,15 @@ class UserService {
     try {
       Response response = await Api().dio.get('/users');
 
-      retrievedUsers = (response.data as List<dynamic>)
-          .map((e) => User.fromJson(e as Map<String, dynamic>))
-          .toList();
+      List<dynamic> rawUserList = response.data;
+
+      for (final rawUser in rawUserList) {
+        try {
+          retrievedUsers.add(User.fromJson(rawUser as Map<String, dynamic>));
+        } catch (e) {
+          debugPrint("error: ${e.toString()}");
+        }
+      }
     } catch (e) {
       debugPrint("error: ${e.toString()}");
       return null;
