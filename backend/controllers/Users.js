@@ -95,7 +95,7 @@ const leaveTeam = async (req, res) => {
   const user = await Users.getUserPopulate(req.user?._id);
 
   const team = await Teams.get(user.teamId);
-
+  console.log(team);
   user.teamId = undefined;
 
   team.playersId = team.playersId.filter((id) => id.toString() != user._id);

@@ -1,5 +1,5 @@
 const Teams = require("../services/Teams");
-const userService = require("../services/Users");
+const Users = require("../services/Users");
 const httpStatus = require("http-status");
 
 const getOne = async (req, res) => {
@@ -13,11 +13,11 @@ const getAll = async (req, res) => {
 };
 const create = async (req, res) => {
   req.body.founder = req.user;
-  const user = await userService.getUserById(req.user?._id);
-  const team = await insert(req.body);
+  const user = await Users.getUserPopulate(req.user?._id);
+  const team = await Teams.insert(req.body);
   team.playersId.push(user);
   await team.save();
-  await userService.modify({ teamId: team }, req.user._id);
+  await Users.update(req.user._id, { teamId: team });
 
   res.status(httpStatus.CREATED).send(team);
 };
