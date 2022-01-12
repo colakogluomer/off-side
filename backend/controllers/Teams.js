@@ -65,7 +65,8 @@ const remove = async (req, res, next) => {
     const deletedTeam = await Teams.remove(req.params?.id);
 
     if (!deletedTeam) throw new ApiError("no team", httpStatus.NOT_FOUND);
-    await Users.updateAll({ teamId: deletedTeam._id }, { teamId: null });
+    user.teamId = undefined;
+    await user.save();
     res.status(httpStatus.OK).send(deletedTeam);
   } catch (error) {
     next(error);
