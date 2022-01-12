@@ -6,6 +6,8 @@ const loaders = require("./loaders");
 const events = require("./scripts/events");
 const { TeamRoutes, UserRoutes, MatchRoutes } = require("./routes");
 const path = require("path");
+const errorHandler = require("./middlewares/errorHandler");
+const ApiError = require("./errors/ApiError");
 
 config();
 loaders();
@@ -21,5 +23,15 @@ app.listen(process.env.APP_PORT, () => {
   console.log("server up");
   app.use("/teams", TeamRoutes);
   app.use("/users", UserRoutes);
+<<<<<<< HEAD
   app.use("/matches", MatchRoutes);
+=======
+
+  app.use((req, res, next) => {
+    const error = new ApiError("Not Found", 404);
+    next(error);
+  });
+
+  app.use(errorHandler);
+>>>>>>> ed114063a006e88b8e9353a3805943f6d08a3ed4
 });
