@@ -52,6 +52,17 @@ class BaseService {
     }
   }
 
+  async updateAll(condition, data) {
+    try {
+      return this.model.update(condition, data, { new: true });
+    } catch (error) {
+      throw new ApiError(
+        "Something went wrong while updating data to database ",
+        httpStatus.NOT_FOUND
+      );
+    }
+  }
+
   async getOne(condition) {
     try {
       return this.model.findOne(condition);

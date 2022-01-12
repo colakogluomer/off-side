@@ -53,9 +53,19 @@ const update = async (req, res) => {
 
 const remove = async (req, res) => {
   try {
-    const deletedTeam = await Teams.remove(req.params?.id);
-    if (!deletedTeam) throw new ApiError("no team", httpStatus.NOT_FOUND);
+    const user = await Users.get(req.user?._id);
+    if (!user) throw new ApiError("no user", httpStatus.NOT_FOUND);
 
+    if (user.teamId != req.params.id)
+      throw new ApiError(
+        "you have not access to do this action",
+        httpStatus.UNAUTHORIZED
+      );
+
+    const deletedTeam = await Teams.remove(req.params?.id);
+
+    if (!deletedTeam) throw new ApiError("no team", httpStatus.NOT_FOUND);
+    await Users.updateAll({ teamId: deletedTeam._id }, { teamId: null });
     res.status(httpStatus.OK).send(deletedTeam);
   } catch (error) {
     next(error);
