@@ -23,9 +23,8 @@ app.listen(process.env.APP_PORT, () => {
   console.log("server up");
   app.use("/teams", TeamRoutes);
   app.use("/users", UserRoutes);
-<<<<<<< HEAD
+
   app.use("/matches", MatchRoutes);
-=======
 
   app.use((req, res, next) => {
     const error = new ApiError("Not Found", 404);
@@ -33,5 +32,4 @@ app.listen(process.env.APP_PORT, () => {
   });
 
   app.use(errorHandler);
->>>>>>> ed114063a006e88b8e9353a3805943f6d08a3ed4
 });

@@ -62,10 +62,31 @@ const remove = async (req, res) => {
   }
 };
 
-const getMatches = async (req, res) => {
+const getMatches = async (req, res, next) => {
   const team = await Teams.get(req.body.teamId);
   const match = await Matches.getOne({ teamsId: team._id });
   res.status(httpStatus.OK).send(match);
+};
+
+const join = async (req, res, next) => {
+  try {
+    const team = await Teams.get(req.body?.teamId);
+    if (!team) throw new ApiError("Team does not exist", httpStatus.NOT_FOUND);
+    const user = await Users.get(req.user?._id);
+    console.log(user);
+    if (user.teamId)
+      throw new ApiError(
+        "You have already joined a team",
+        httpStatus.BAD_REQUEST
+      );
+    const joinedUser = await Users.update(user._id, { teamId: team });
+    team.playersId.push(joinedUser);
+    await team.save();
+
+    res.status(httpStatus.OK).send(team);
+  } catch (error) {
+    next(error);
+  }
 };
 
 module.exports = {
@@ -75,4 +96,5 @@ module.exports = {
   update,
   remove,
   getMatches,
+  join,
 };
