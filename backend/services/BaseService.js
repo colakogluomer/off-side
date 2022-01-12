@@ -1,35 +1,88 @@
+const httpStatus = require("http-status");
+const ApiError = require("../errors/ApiError");
+
 class BaseService {
   constructor(model) {
     this.model = model;
   }
 
   async insert(data) {
-    const created = await new this.model(data);
-    return created.save();
+    try {
+      const created = await new this.model(data);
+
+      return created.save();
+    } catch (error) {
+      throw new ApiError(
+        "Something went wrong while inserting data to database",
+        httpStatus.NOT_FOUND
+      );
+    }
   }
 
   async load() {
-    return this.model.find();
+    try {
+      return this.model.find();
+    } catch (error) {
+      throw new ApiError(
+        "Something went wrong while loading datas from database ",
+        httpStatus.NOT_FOUND
+      );
+    }
   }
 
   async get(id) {
-    return this.model.findById(id);
+    try {
+      return this.model.findById(id);
+    } catch (error) {
+      throw new ApiError(
+        "Something went wrong while fetching data from database ",
+        httpStatus.NOT_FOUND
+      );
+    }
   }
 
   async update(id, data) {
-    return this.model.findByIdAndUpdate(id, data, { new: true });
+    try {
+      return this.model.findByIdAndUpdate(id, data, { new: true });
+    } catch (error) {
+      throw new ApiError(
+        "Something went wrong while updating data to database ",
+        httpStatus.NOT_FOUND
+      );
+    }
   }
 
   async getOne(condition) {
-    return this.model.findOne(condition);
+    try {
+      return this.model.findOne(condition);
+    } catch (error) {
+      throw new ApiError(
+        "Something went wrong while fetching data from database ",
+        httpStatus.NOT_FOUND
+      );
+    }
   }
 
   async remove(id) {
-    return this.model.findByIdAndDelete(id);
+    try {
+      return this.model.findByIdAndDelete(id);
+    } catch (error) {
+      throw new ApiError(
+        "Something went wrong while removing data from database ",
+        httpStatus.NOT_FOUND
+      );
+    }
   }
 
   async updateOne(condition, data) {
-    return this.model.findOneAndUpdate(condition, data, { new: true });
+    try {
+      return this.model.findOneAndUpdate(condition, data, { new: true });
+    } catch (error) {
+      throw new ApiError(
+        "Something went wrong while updating data to database ",
+        httpStatus.NOT_FOUND
+      );
+    }
   }
 }
 
