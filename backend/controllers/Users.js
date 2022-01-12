@@ -146,6 +146,8 @@ const leaveTeam = async (req, res, next) => {
   try {
     const user = await Users.getUserPopulate(req.user?._id);
     if (!user) throw new ApiError("no user", httpStatus.NOT_FOUND);
+    if (!user.teamId)
+      throw new ApiError("no user's team", httpStatus.NOT_FOUND);
     const team = await Teams.get(user.teamId);
     if (!team) throw new ApiError("no team", httpStatus.NOT_FOUND);
     console.log(team);
