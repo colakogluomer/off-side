@@ -51,7 +51,7 @@ const update = async (req, res) => {
   }
 };
 
-const remove = async (req, res) => {
+const remove = async (req, res, next) => {
   try {
     const user = await Users.get(req.user?._id);
     if (!user) throw new ApiError("no user", httpStatus.NOT_FOUND);
