@@ -1,5 +1,7 @@
 const Teams = require("../services/Teams");
 const Users = require("../services/Users");
+const Matches = require("../services/Matches");
+
 const httpStatus = require("http-status");
 
 const getOne = async (req, res) => {
@@ -32,10 +34,17 @@ const remove = async (req, res) => {
   res.status(httpStatus.OK).send(deletedTeam);
 };
 
+const getMatches = async (req, res) => {
+  const team = await Teams.get(req.body.teamId);
+  const match = await Matches.getOne({ teamsId: team._id });
+  res.status(httpStatus.OK).send(match);
+};
+
 module.exports = {
   getOne,
   getAll,
   create,
   update,
   remove,
+  getMatches,
 };

@@ -13,6 +13,12 @@ const TeamSchema = new mongoose.Schema(
       type: mongoose.Types.ObjectId,
       ref: "user",
     },
+    matches: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "match",
+      },
+    ],
   },
   { timestamps: true, versionKey: false }
 );

@@ -9,17 +9,19 @@ const {
   update,
   getOne,
   remove,
+  getMatches,
 } = require("../controllers/Teams");
 
-router.route("/").get(authenticate, getAll);
+router.route("/").get(/*authenticate,*/ getAll);
 router.route("/search").get(authenticate, getOne);
 router
   .route("/")
-  .post(authenticate, validate(schemas.createValidation), create);
+  .post(/*authenticate,*/ validate(schemas.createValidation), create);
 router
   .route("/:id")
   .patch(authenticate, validate(schemas.updateValidation), update);
 
 router.route("/:id").delete(authenticate, remove);
+router.route("/match").get(getMatches);
 
 module.exports = router;

@@ -4,7 +4,7 @@ const fileUpload = require("express-fileupload");
 const config = require("./config");
 const loaders = require("./loaders");
 const events = require("./scripts/events");
-const { TeamRoutes, UserRoutes } = require("./routes");
+const { TeamRoutes, UserRoutes, MatchRoutes } = require("./routes");
 const path = require("path");
 
 config();
@@ -21,4 +21,5 @@ app.listen(process.env.APP_PORT, () => {
   console.log("server up");
   app.use("/teams", TeamRoutes);
   app.use("/users", UserRoutes);
+  app.use("/matches", MatchRoutes);
 });
