@@ -1,12 +1,20 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:frontend/api/token_repository.dart';
 import 'package:frontend/constants/settings.dart' as settings;
 
 class Api {
   final dio = createDio();
   final tokenDio = Dio(BaseOptions(baseUrl: settings.serverUrl));
+  final loginDio = Dio(BaseOptions(
+    baseUrl: settings.serverUrl,
+    followRedirects: false,
+    validateStatus: (status) {
+      return status! < 500;
+    },
+  ));
 
   Api._internal();
 
@@ -31,7 +39,9 @@ class AppInterceptors extends Interceptor {
   @override
   void onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
-    options.headers['Authorization'] = await TokenRepository.getAccessToken();
+    options.headers['Authorization'] =
+        'Bearer ${await TokenRepository.getAccessToken()}';
+    debugPrint(options.headers.toString());
     return handler.next(options);
   }
 
@@ -60,8 +70,8 @@ class AppInterceptors extends Interceptor {
       return true;
     } else {
       // refresh token is wrong
-      TokenRepository.setAccessToken(null);
-      TokenRepository.setRefreshToken(null);
+      //TokenRepository.setAccessToken(null);
+      //TokenRepository.setRefreshToken(null);
       return false;
     }
   }
