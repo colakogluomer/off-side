@@ -25,8 +25,11 @@ const getAll = async (req, res, next) => {
 };
 const create = async (req, res, next) => {
   try {
+    if (req.user.teamId)
+      throw new ApiError("you have already team", httpStatus.BAD_REQUEST);
     req.body.founder = req.user;
     const user = await Users.getUserPopulate(req.user?._id);
+
     if (!user) throw new ApiError("no user", httpStatus.NOT_FOUND);
     const team = await Teams.insert(req.body);
     if (!team) throw new ApiError("no team", httpStatus.NOT_FOUND);
@@ -51,7 +54,7 @@ const update = async (req, res) => {
   }
 };
 
-const remove = async (req, res, next) => {
+const remove = async (req, res) => {
   try {
     const user = await Users.get(req.user?._id);
     if (!user) throw new ApiError("no user", httpStatus.NOT_FOUND);
@@ -74,8 +77,11 @@ const remove = async (req, res, next) => {
 };
 
 const getMatches = async (req, res, next) => {
+  console.log(req.body.teamId);
   const team = await Teams.get(req.body.teamId);
-  const match = await Matches.getOne({ teamsId: team._id });
+  console.log(team._id);
+  const match = await Matches.getCon({ teamsId: team._id });
+  console.log(match);
   res.status(httpStatus.OK).send(match);
 };
 
