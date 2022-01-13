@@ -9,6 +9,8 @@ const UserSchema = new mongoose.Schema(
       type: mongoose.Types.ObjectId,
       ref: "team",
     },
+    position: String,
+    level: String,
   },
   { timestamps: true, versionKey: false }
 );
