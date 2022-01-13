@@ -8,8 +8,8 @@ class Teams extends BaseService {
     const team = await this.getOne({ name: condition });
     if (!team) throw new ApiError("no team", httpStatus.NOT_FOUND);
     return this.model.populate(team, {
-      path: "founder",
-      select: "name",
+      path: "matches founder playersId",
+      select: "adress name name",
     });
   }
 }
