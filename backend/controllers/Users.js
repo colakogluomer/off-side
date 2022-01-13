@@ -64,7 +64,15 @@ const getPlayerTeam = async (req, res, next) => {
     next(error);
   }
 };
-
+const getUser = async (req, res, next) => {
+  try {
+    const user = await Users.get(req.params?.id);
+    if (!user) throw new ApiError("no user", httpStatus.NOT_FOUND);
+    res.status(httpStatus.OK).send(user);
+  } catch (error) {
+    next(error);
+  }
+};
 const resetPassword = async (req, res, next) => {
   try {
     const newPassword =
@@ -113,6 +121,11 @@ const changePassword = async (req, res, next) => {
 
 const remove = async (req, res, next) => {
   try {
+    if (!(req.user._id == req.params.id))
+      throw new ApiError(
+        "you have not access for this action",
+        httpStatus.UNAUTHORIZED
+      );
     const deletedUser = await Users.remove(req.params?.id);
     if (!deletedUser) throw new ApiError("No user", httpStatus.NOT_FOUND);
 
@@ -173,4 +186,5 @@ module.exports = {
   remove,
   updateProfileImage,
   leaveTeam,
+  getUser,
 };

@@ -15,6 +15,7 @@ const {
   remove,
   updateProfileImage,
   leaveTeam,
+  getUser,
 } = require("../controllers/Users");
 
 router.get("/", getAll);
@@ -32,7 +33,7 @@ router.route("/:id").delete(authenticate, remove);
 router
   .route("/change-password")
   .post(authenticate, validate(schemas.changePassword), changePassword);
-
+router.route("/:id").get(authenticate, getUser);
 router.route("/update-profile-image").post(authenticate, updateProfileImage);
 router.route("/leave-team").patch(authenticate, leaveTeam);
 module.exports = router;
