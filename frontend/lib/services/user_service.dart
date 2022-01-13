@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/api/api.dart';
+import 'package:frontend/api/token_repository.dart';
 import 'package:frontend/models/user/user.dart';
 
 class UserService {
@@ -45,5 +48,62 @@ class UserService {
 
     debugPrint('retrievedUsers ${retrievedUsers.toString()}');
     return retrievedUsers;
+  }
+
+  static Future<String?> register(
+      {required String? email,
+      required String? password,
+      required String? name}) async {
+    final response = await Api().loginDio.post('/users', data: {
+      'name': name,
+      'email': email,
+      'password': password,
+    });
+    if (response.statusCode == HttpStatus.created) {
+      return null;
+    } else if (response.statusCode == HttpStatus.badRequest) {
+      final message = response.data['error'];
+      return message.toString();
+    }
+    return response.data.toString();
+  }
+
+  static Future<String?> login(String email, String password) async {
+    final response = await Api().loginDio.post('/users/login', data: {
+      'email': email,
+      'password': password,
+    });
+    debugPrint("response.status ${response.statusCode}, data ${response.data}");
+
+    if (response.statusCode == HttpStatus.ok) {
+      final tokens = response.data['tokens'];
+      await TokenRepository.setAccessToken(tokens['access_token']);
+      await TokenRepository.setRefreshToken(tokens['refresh_token']);
+      debugPrint(await TokenRepository.getAccessToken());
+      return null;
+    } else if (response.statusCode == HttpStatus.badRequest) {
+      final message = response.data['error'];
+      return message.toString();
+    }
+    return response.data.toString();
+  }
+
+  static Future<void> logout() async {
+    await TokenRepository.setAccessToken(null);
+    await TokenRepository.setRefreshToken(null);
+  }
+
+  static Future<String?> resetPassword(String email) async {
+    final response = await Api().loginDio.post('/reset-password', data: {
+      'email': email,
+    });
+
+    if (response.statusCode == HttpStatus.ok) {
+      return null;
+    } else if (response.statusCode == HttpStatus.badRequest) {
+      final message = response.data['error'];
+      return message.toString();
+    }
+    return response.data.toString();
   }
 }
