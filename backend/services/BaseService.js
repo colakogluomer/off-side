@@ -54,18 +54,26 @@ class BaseService {
 
   async updateAll(condition, data) {
     try {
-      return this.model.update(condition, data, { new: true });
+      return await this.model.update(condition, data, { new: true });
     } catch (error) {
-      throw new ApiError(
-        "Something went wrong while updating data to database ",
-        httpStatus.NOT_FOUND
-      );
+      throw new ApiError(error.message, httpStatus.NOT_FOUND);
     }
   }
 
   async getOne(condition) {
     try {
       return this.model.findOne(condition);
+    } catch (error) {
+      throw new ApiError(
+        "Something went wrong while fetching data from database ",
+        httpStatus.NOT_FOUND
+      );
+    }
+  }
+
+  async getAll(condition) {
+    try {
+      return this.model.find(condition);
     } catch (error) {
       throw new ApiError(
         "Something went wrong while fetching data from database ",
