@@ -40,6 +40,10 @@ class BaseService {
       );
     }
   }
+  x;
+  async getCon(condition) {
+    return this.model.find(condition);
+  }
 
   async update(id, data) {
     try {

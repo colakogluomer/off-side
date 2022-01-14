@@ -9,7 +9,6 @@ const {
   update,
   getOne,
   remove,
-  getMatches,
   join,
 } = require("../controllers/Teams");
 
@@ -23,7 +22,6 @@ router
   .patch(authenticate, validate(schemas.updateValidation), update);
 
 router.route("/:id").delete(authenticate, remove);
-router.route("/match").get(getMatches);
 router.route("/join").post(authenticate, join);
 
 module.exports = router;

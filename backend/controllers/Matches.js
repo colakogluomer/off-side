@@ -23,6 +23,12 @@ const getAll = async (req, res) => {
   res.status(httpStatus.OK).send(matches);
 };
 
+const getMatches = async (req, res, next) => {
+  const team = await Teams.get(req.body.teamId);
+  const match = await Matches.getCon({ teamsId: team._id });
+  res.status(httpStatus.OK).send(match);
+};
+
 const remove = async (req, res, next) => {
   try {
     const team = await Teams.get(req.body.teamId[0]);
@@ -54,4 +60,5 @@ module.exports = {
   create,
   getAll,
   remove,
+  getMatches,
 };

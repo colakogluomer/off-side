@@ -1,6 +1,5 @@
 const Teams = require("../services/Teams");
 const Users = require("../services/Users");
-const Matches = require("../services/Matches");
 
 const httpStatus = require("http-status");
 const ApiError = require("../errors/ApiError");
@@ -73,12 +72,6 @@ const remove = async (req, res, next) => {
   }
 };
 
-const getMatches = async (req, res, next) => {
-  const team = await Teams.get(req.body.teamId);
-  const match = await Matches.getOne({ teamsId: team._id });
-  res.status(httpStatus.OK).send(match);
-};
-
 const join = async (req, res, next) => {
   try {
     const team = await Teams.get(req.body?.teamId);
@@ -106,6 +99,5 @@ module.exports = {
   create,
   update,
   remove,
-  getMatches,
   join,
 };
