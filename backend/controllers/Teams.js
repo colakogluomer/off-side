@@ -78,8 +78,6 @@ const remove = async (req, res, next) => {
   }
 };
 
-<<<<<<< HEAD
-=======
 const getMatches = async (req, res, next) => {
   console.log(req.body.teamId);
   const team = await Teams.get(req.body.teamId);
@@ -89,7 +87,6 @@ const getMatches = async (req, res, next) => {
   res.status(httpStatus.OK).send(match);
 };
 
->>>>>>> e9fd054ee4d5b92c106d0b03d44b2ed45e92e21c
 const join = async (req, res, next) => {
   try {
     const team = await Teams.get(req.body?.teamId);
