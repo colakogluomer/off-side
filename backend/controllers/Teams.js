@@ -77,16 +77,6 @@ const remove = async (req, res, next) => {
     next(error);
   }
 };
-
-const getMatches = async (req, res, next) => {
-  console.log(req.body.teamId);
-  const team = await Teams.get(req.body.teamId);
-  console.log(team._id);
-  const match = await Matches.getCon({ teamsId: team._id });
-  console.log(match);
-  res.status(httpStatus.OK).send(match);
-};
-
 const join = async (req, res, next) => {
   try {
     const team = await Teams.get(req.body?.teamId);
