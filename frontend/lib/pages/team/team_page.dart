@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/models/team/team.dart';
+import 'package:frontend/models/user/user.dart';
 import 'package:frontend/services/team_service.dart';
 import 'package:frontend/services/user_service.dart';
+import 'package:frontend/widgets/team_card.dart';
+import 'package:frontend/widgets/user_card.dart';
 
 class TeamPage extends StatelessWidget {
   const TeamPage({Key? key}) : super(key: key);
@@ -19,111 +23,55 @@ class TeamPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Team page'),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            FutureBuilder<String>(
-              future:
-                  getTeams(), // a previously-obtained Future<String> or null
-              builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-                List<Widget> children;
-                if (snapshot.hasData) {
-                  children = <Widget>[
-                    const Icon(
-                      Icons.check_circle_outline,
-                      color: Colors.green,
-                      size: 60,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 16),
-                      child: Text('Result: ${snapshot.data}'),
-                    )
-                  ];
-                } else if (snapshot.hasError) {
-                  children = <Widget>[
-                    const Icon(
-                      Icons.error_outline,
-                      color: Colors.red,
-                      size: 60,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 16),
-                      child: Text('Error: ${snapshot.error}'),
-                    )
-                  ];
-                } else {
-                  children = const <Widget>[
-                    SizedBox(
-                      width: 60,
-                      height: 60,
-                      child: CircularProgressIndicator(),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 16),
-                      child: Text('Awaiting result...'),
-                    )
-                  ];
-                }
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: children,
+      body: Column(
+        children: [
+          FutureBuilder<List<Team>?>(
+            future: TeamService.list(),
+            builder:
+                (BuildContext context, AsyncSnapshot<List<Team>?> snapshot) {
+              Widget child;
+              List<Team>? teams = snapshot.data;
+              if (snapshot.hasData && teams != null) {
+                child = SizedBox(
+                  height: 300.0,
+                  child: ListView.builder(
+                    itemCount: teams.length,
+                    itemBuilder: (_, i) => TeamCard(team: teams[i]),
                   ),
                 );
-              },
-            ),
-            FutureBuilder<String>(
-              future:
-                  getUsers(), // a previously-obtained Future<String> or null
-              builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-                List<Widget> children;
-                if (snapshot.hasData) {
-                  children = <Widget>[
-                    const Icon(
-                      Icons.check_circle_outline,
-                      color: Colors.green,
-                      size: 60,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 16),
-                      child: Text('Result: ${snapshot.data}'),
-                    )
-                  ];
-                } else if (snapshot.hasError) {
-                  children = <Widget>[
-                    const Icon(
-                      Icons.error_outline,
-                      color: Colors.red,
-                      size: 60,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 16),
-                      child: Text('Error: ${snapshot.error}'),
-                    )
-                  ];
-                } else {
-                  children = const <Widget>[
-                    SizedBox(
-                      width: 60,
-                      height: 60,
-                      child: CircularProgressIndicator(),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 16),
-                      child: Text('Awaiting result...'),
-                    )
-                  ];
-                }
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: children,
+              } else if (snapshot.connectionState == ConnectionState.done) {
+                child = const Icon(
+                  Icons.error_outline,
+                  color: Colors.red,
+                  size: 60,
+                );
+              } else {
+                child = const Center(child: CircularProgressIndicator());
+              }
+              return child;
+            },
+          ),
+          FutureBuilder<List<User>?>(
+            future: UserService.list(),
+            builder:
+                (BuildContext context, AsyncSnapshot<List<User>?> snapshot) {
+              Widget child;
+              List<User>? users = snapshot.data;
+              if (snapshot.hasData && users != null) {
+                child = SizedBox(
+                  height: 300.0,
+                  child: ListView.builder(
+                    itemCount: users.length,
+                    itemBuilder: (_, i) => UserCard(user: users[i]),
                   ),
                 );
-              },
-            ),
-          ],
-        ),
+              } else {
+                child = const Center(child: CircularProgressIndicator());
+              }
+              return child;
+            },
+          ),
+        ],
       ),
     );
   }

@@ -12,7 +12,7 @@ class TokenRepository {
 
   static Future<void> setAccessToken(String? value) async {
     _accessToken = value;
-    await storage.write(key: 'refreshToken', value: value);
+    await storage.write(key: 'accessToken', value: value);
   }
 
   static Future<String?> getRefreshToken() async =>
