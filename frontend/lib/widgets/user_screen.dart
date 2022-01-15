@@ -1,9 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/constants/settings.dart' as settings;
 import 'package:frontend/models/team/team.dart';
 import 'package:frontend/models/user/user.dart';
-import 'package:frontend/services/user_service.dart';
+import 'package:frontend/services/team_service.dart';
 import 'package:frontend/widgets/team_card.dart';
 
 class UserProfileScreen extends StatelessWidget {
@@ -25,15 +24,20 @@ class UserProfileScreen extends StatelessWidget {
           clipBehavior: Clip.antiAlias,
           child: Column(
             children: [
-              Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 300,
-                  child: user.profileImage != null
-                      ? Image.network(
-                          '${settings.serverUrl}/uploads/users/${user.profileImage}',
-                          fit: BoxFit.fitWidth,
-                        )
-                      : Container()),
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                height: 300,
+                child: user.profileImage != null
+                    ? Image.network(
+                        '${settings.serverUrl}/uploads/users/${user.profileImage}',
+                        fit: BoxFit.fitWidth,
+                      )
+                    : Image.asset(
+                        'images/avatar_placeholder.png',
+                        fit: BoxFit.fitWidth,
+                      ),
+              ),
+              const SizedBox(height: 15.0),
               ListTile(
                 title: Text(user.name),
                 subtitle: Column(
@@ -44,21 +48,22 @@ class UserProfileScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              // TODO: Use actual user team
-              FutureBuilder<Team?>(
-                future: UserService.team(),
-                builder: (BuildContext context, AsyncSnapshot<Team?> snapshot) {
-                  Widget child;
-                  Team? userTeam = snapshot.data;
-                  debugPrint(snapshot.hasData.toString());
-                  if (snapshot.hasData && userTeam != null) {
-                    child = TeamCard(team: userTeam);
-                  } else {
-                    child = Container();
-                  }
-                  return child;
-                },
-              ),
+              if (user.teamId != null)
+                FutureBuilder<Team?>(
+                  future: TeamService.getById(user.teamId ?? "no team"),
+                  builder:
+                      (BuildContext context, AsyncSnapshot<Team?> snapshot) {
+                    Widget child;
+                    Team? userTeam = snapshot.data;
+                    debugPrint(snapshot.hasData.toString());
+                    if (snapshot.hasData && userTeam != null) {
+                      child = TeamCard(team: userTeam);
+                    } else {
+                      child = Container();
+                    }
+                    return child;
+                  },
+                ),
               ButtonBar(
                 alignment: MainAxisAlignment.end,
                 children: [
