@@ -8,6 +8,22 @@ import 'package:frontend/models/team/team.dart';
 import 'package:frontend/models/user/user.dart';
 
 class UserService {
+  static Future<User?> getById(String id) async {
+    User? retrievedUser;
+
+    try {
+      Response response = await Api().dio.get('/users/$id');
+
+      debugPrint('User retrieved: ${response.data}');
+
+      retrievedUser = User.fromJson(response.data);
+    } catch (e) {
+      return null;
+    }
+
+    return retrievedUser;
+  }
+
   static Future<User?> create(User user) async {
     User? retrievedUser;
 
