@@ -28,6 +28,11 @@ class ProfilePage extends StatelessWidget {
                   UserService.logout();
                 },
                 child: const Text("Logout")),
+            ElevatedButton(
+                onPressed: () {
+                  UserService.leaveTeam();
+                },
+                child: const Text("Leave team")),
           ],
         ),
       ),

@@ -46,4 +46,19 @@ class TeamService {
     debugPrint('retrievedTeams ${retrievedTeams.toString()}');
     return retrievedTeams;
   }
+
+  static Future<String?> join(String id) async {
+    String? message;
+
+    try {
+      await Api().dio.post(
+        '/teams/join',
+        data: {"teamId": id},
+      );
+    } on DioError catch (err, stack) {
+      debugPrint("error: $stack");
+      message = err.response?.data;
+    }
+    return message;
+  }
 }

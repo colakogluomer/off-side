@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/models/team/team.dart';
 import 'package:frontend/models/user/user.dart';
 import 'package:frontend/pages/team/search_team_screen.dart';
 import 'package:frontend/services/team_service.dart';
 import 'package:frontend/services/user_service.dart';
+import 'package:frontend/widgets/team_card.dart';
 import 'package:frontend/widgets/user_card.dart';
 
 class TeamPage extends StatelessWidget {
@@ -24,6 +26,25 @@ class TeamPage extends StatelessWidget {
       ),
       body: Column(
         children: [
+          FutureBuilder<Team?>(
+            future: UserService.team(),
+            builder: (BuildContext context, AsyncSnapshot<Team?> snapshot) {
+              Widget child;
+              Team? userTeam = snapshot.data;
+              debugPrint(snapshot.hasData.toString());
+              if (snapshot.hasData && userTeam != null) {
+                child = Column(
+                  children: [
+                    const Text("Your Team"),
+                    TeamCard(team: userTeam),
+                  ],
+                );
+              } else {
+                child = Container();
+              }
+              return child;
+            },
+          ),
           ElevatedButton(
             onPressed: () {
               Navigator.push(
