@@ -11,9 +11,7 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
       email: json['email'] as String?,
       name: json['name'] as String,
       profileImage: json['profileImage'] as String?,
-      teamId: json['teamId'] == null
-          ? null
-          : Team.fromJson(json['teamId'] as Map<String, dynamic>),
+      teamId: json['teamId'] as String?,
       createdAt: json['createdAt'] == null
           ? null
           : DateTime.parse(json['createdAt'] as String),
