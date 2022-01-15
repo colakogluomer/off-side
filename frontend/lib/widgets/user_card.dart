@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/constants/settings.dart' as settings;
 import 'package:frontend/models/user/user.dart';
 
 class UserCard extends StatelessWidget {
@@ -18,7 +19,8 @@ class UserCard extends StatelessWidget {
           ListTile(
             leading: user.profileImage != null
                 ? CircleAvatar(
-                    backgroundImage: NetworkImage(user.profileImage ?? ""),
+                    backgroundImage: NetworkImage(
+                        '${settings.serverUrl}/uploads/users/${user.profileImage}'),
                   )
                 : const Icon(Icons.person),
             title: Text(user.name),
