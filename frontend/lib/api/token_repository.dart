@@ -20,4 +20,10 @@ class TokenRepository {
 
   static Future<void> setRefreshToken(String? value) async =>
       await storage.write(key: 'refreshToken', value: value);
+
+  static Future<String?> getCurrentUserId() async =>
+      await storage.read(key: 'currentUserId');
+
+  static Future<void> setCurrentUserId(String? value) async =>
+      await storage.write(key: 'currentUserId', value: value);
 }
