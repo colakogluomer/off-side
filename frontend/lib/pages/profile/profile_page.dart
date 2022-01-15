@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/pages/login.dart';
 import 'package:frontend/services/user_service.dart';
+import 'package:frontend/utils/snackbar_service.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -29,8 +30,10 @@ class ProfilePage extends StatelessWidget {
                 },
                 child: const Text("Logout")),
             ElevatedButton(
-                onPressed: () {
-                  UserService.leaveTeam();
+                onPressed: () async {
+                  String? message = await UserService.leaveTeam();
+                  message ??= "You left the team.";
+                  showSnackBar(context, message);
                 },
                 child: const Text("Leave team")),
           ],
