@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/api/api.dart';
 import 'package:frontend/api/token_repository.dart';
+import 'package:frontend/models/team/team.dart';
 import 'package:frontend/models/user/user.dart';
 
 class UserService {
@@ -24,6 +25,38 @@ class UserService {
     }
 
     return retrievedUser;
+  }
+
+  static Future<Team?> team() async {
+    Team? retrievedTeam;
+    try {
+      Response response = await Api().dio.get(
+            '/users/team',
+          );
+      debugPrint("retrievedTeam team(): ${response.data}");
+
+      retrievedTeam = Team.fromJson(response.data as Map<String, dynamic>);
+    } on DioError catch (_, e) {
+      debugPrint("error team(): ${e.toString()}");
+      return null;
+    }
+
+    debugPrint("retrievedTeam: $retrievedTeam");
+    return retrievedTeam;
+  }
+
+  static Future<String?> leaveTeam() async {
+    String? message;
+    try {
+      await Api().dio.patch('/users/leave-team');
+    } on DioError catch (err, stack) {
+      debugPrint("error: $stack");
+      debugPrint(err.response?.data);
+      if (err.response?.statusCode == HttpStatus.notFound) {
+        message = err.response?.data;
+      }
+    }
+    return message;
   }
 
   static Future<List<User>?> list() async {
