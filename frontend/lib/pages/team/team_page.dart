@@ -66,7 +66,7 @@ class TeamPage extends StatelessWidget {
                   height: 300.0,
                   child: ListView.builder(
                     itemCount: users.length,
-                    itemBuilder: (_, i) => UserCard(user: users[i]),
+                    itemBuilder: (_, i) => UserHorizontalCard(user: users[i]),
                   ),
                 );
               } else {

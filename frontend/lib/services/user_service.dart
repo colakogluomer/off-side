@@ -8,6 +8,45 @@ import 'package:frontend/models/team/team.dart';
 import 'package:frontend/models/user/user.dart';
 
 class UserService {
+  static Future<User?> getById(String id) async {
+    User? retrievedUser;
+
+    try {
+      Response response = await Api().dio.get('/users/$id');
+
+      debugPrint('User retrieved: ${response.data}');
+
+      retrievedUser = User.fromJson(response.data);
+    } catch (e) {
+      return null;
+    }
+
+    return retrievedUser;
+  }
+
+  static Future<User?> getCurrentUser() async {
+    User? currentUser;
+    String? id = await TokenRepository.getCurrentUserId();
+
+    if (id == null) return null;
+
+    try {
+      Response response = await Api().dio.get('/users/$id');
+
+      debugPrint('User retrieved: ${response.data}');
+
+      currentUser = User.fromJson(response.data);
+    } catch (e) {
+      return null;
+    }
+
+    return currentUser;
+  }
+
+  static Future<String?> getCurrentUserId() async {
+    return await TokenRepository.getCurrentUserId().then((value) => value);
+  }
+
   static Future<User?> create(User user) async {
     User? retrievedUser;
 
@@ -112,6 +151,7 @@ class UserService {
       final tokens = response.data['tokens'];
       await TokenRepository.setAccessToken(tokens['access_token']);
       await TokenRepository.setRefreshToken(tokens['refresh_token']);
+      await TokenRepository.setCurrentUserId(response.data['_id']);
       debugPrint(await TokenRepository.getAccessToken());
       return null;
     } else if (response.statusCode == HttpStatus.badRequest) {
@@ -124,6 +164,7 @@ class UserService {
   static Future<void> logout() async {
     await TokenRepository.setAccessToken(null);
     await TokenRepository.setRefreshToken(null);
+    await TokenRepository.setCurrentUserId(null);
   }
 
   static Future<String?> resetPassword(String email) async {

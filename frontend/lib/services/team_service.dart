@@ -4,6 +4,23 @@ import 'package:frontend/api/api.dart';
 import 'package:frontend/models/team/team.dart';
 
 class TeamService {
+  static Future<Team?> getById(String id) async {
+    Team? retrievedTeam;
+
+    try {
+      debugPrint('=============================================$id');
+      Response response = await Api().dio.get('/teams/$id');
+
+      debugPrint('Team retrieved: ${response.data}');
+
+      retrievedTeam = Team.fromJson(response.data);
+    } catch (e) {
+      return null;
+    }
+
+    return retrievedTeam;
+  }
+
   static Future<Team?> create(Team team) async {
     Team? retrievedTeam;
 

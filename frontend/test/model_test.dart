@@ -28,24 +28,20 @@ void main() {
   });
 
   test('Deserialize user with team', () async {
-    final u = User.fromJson({
-      "_id": "61b4cff4a3b665dec3b8bb6f",
-      "name": "omer3434",
-      "password":
-          "bdbcbc97008bba7bb43115696cb2699baf2ff38998230f2b84cb84915a428fc2",
-      "email": "omercolakoglu52@gmail.com",
-      "createdAt": "2021-12-11T16:21:08.204Z",
-      "updatedAt": "2021-12-14T20:04:12.329Z",
-      "teamId": {
-        "_id": "61b4f968d4a853fa5546dbb7",
-        "name": "selamlar1",
-        "playersId": [
-          {"_id": "61b4cff4a3b665dec3b8bb6f", "name": "omer3434"}
-        ]
-      }
-    });
+    final u = User.fromJson(
+      {
+        "_id": "61d9cfd6467935d08fbe2fd2",
+        "name": "Daniel",
+        "password":
+            "d4c2aa342ba7fe97c0a49c248e4e85d3769481d6885d0a493b4e139fa2849386",
+        "email": "daniel@email.com",
+        "createdAt": "2022-01-08T17:54:30.941Z",
+        "updatedAt": "2022-01-15T20:13:07.976Z",
+        "teamId": "61a591e1dd9d6d3a2703ff8f"
+      },
+    );
 
-    expect(u.teamId?.playerIds[0].id, "61b4cff4a3b665dec3b8bb6f");
+    expect(u.teamId, "61a591e1dd9d6d3a2703ff8f");
   });
 
   test('Deserialize user with team', () async {
