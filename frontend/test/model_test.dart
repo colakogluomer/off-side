@@ -6,6 +6,7 @@
 // tree, read text, and verify that the values of widget properties are correct.
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:frontend/models/match/match.dart';
 import 'package:frontend/models/team/team.dart';
 import 'package:frontend/models/user/user.dart';
 
@@ -61,5 +62,23 @@ void main() {
     expect(t.name, "hellotry");
     expect(t.createdAt?.day, 11);
     expect(t.founder?.name, "omer3434");
+  });
+
+  test('Deserialize match', () async {
+    final m = MatchDto.fromJson(
+      {
+        "_id": "61dee2fe6fd0301c717f1d8c",
+        "teamsId": ["61ddfbefd17ef039dfe8b7fc", "61daeb010d81a001a600b621"],
+        "adress": "sasdas",
+        "date": "2022-01-18T20:00:00.000Z",
+        "createdAt": "2022-01-12T14:17:34.600Z",
+        "updatedAt": "2022-01-12T14:17:34.600Z"
+      },
+    );
+
+    expect(m.teamIds[1], "61daeb010d81a001a600b621");
+    expect(m.address, "sasdas");
+    expect(m.createdAt?.day, 12);
+    expect(m.date.day, 18);
   });
 }
