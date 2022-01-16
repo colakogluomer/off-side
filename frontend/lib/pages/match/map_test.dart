@@ -46,6 +46,9 @@ class MapTest extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text("map Test"),
+      ),
       body: FutureBuilder<Position>(
         future: _determinePosition(),
         builder: (_, snapshot) {
