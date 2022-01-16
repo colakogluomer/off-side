@@ -9,7 +9,7 @@ class Team {
   String? id;
   String name;
   @JsonKey(name: 'playersId')
-  List<User> playerIds;
+  List<String> playerIds;
   User? founder;
   DateTime? createdAt;
   DateTime? updatedAt;

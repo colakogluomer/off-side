@@ -1,17 +1,17 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user.dart';
+part of 'match.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-User _$UserFromJson(Map<String, dynamic> json) => User(
+MatchDto _$MatchDtoFromJson(Map<String, dynamic> json) => MatchDto(
       id: json['_id'] as String?,
-      email: json['email'] as String?,
-      name: json['name'] as String,
-      profileImage: json['profileImage'] as String?,
-      teamId: json['teamId'] as String?,
+      teamIds:
+          (json['teamsId'] as List<dynamic>).map((e) => e as String).toList(),
+      address: json['adress'] as String,
+      date: DateTime.parse(json['date'] as String),
       createdAt: json['createdAt'] == null
           ? null
           : DateTime.parse(json['createdAt'] as String),
@@ -20,12 +20,11 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
           : DateTime.parse(json['updatedAt'] as String),
     );
 
-Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
+Map<String, dynamic> _$MatchDtoToJson(MatchDto instance) => <String, dynamic>{
       '_id': instance.id,
-      'email': instance.email,
-      'name': instance.name,
-      'profileImage': instance.profileImage,
-      'teamId': instance.teamId,
+      'teamsId': instance.teamIds,
+      'adress': instance.address,
+      'date': instance.date.toIso8601String(),
       'createdAt': instance.createdAt?.toIso8601String(),
       'updatedAt': instance.updatedAt?.toIso8601String(),
     };

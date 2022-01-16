@@ -4,9 +4,49 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/api/api.dart';
 import 'package:frontend/api/token_repository.dart';
+import 'package:frontend/models/team/team.dart';
 import 'package:frontend/models/user/user.dart';
 
 class UserService {
+  static Future<User?> getById(String id) async {
+    User? retrievedUser;
+
+    try {
+      Response response = await Api().dio.get('/users/$id');
+
+      debugPrint('User retrieved: ${response.data}');
+
+      retrievedUser = User.fromJson(response.data);
+    } catch (e) {
+      return null;
+    }
+
+    return retrievedUser;
+  }
+
+  static Future<User?> getCurrentUser() async {
+    User? currentUser;
+    String? id = await TokenRepository.getCurrentUserId();
+
+    if (id == null) return null;
+
+    try {
+      Response response = await Api().dio.get('/users/$id');
+
+      debugPrint('User retrieved: ${response.data}');
+
+      currentUser = User.fromJson(response.data);
+    } catch (e) {
+      return null;
+    }
+
+    return currentUser;
+  }
+
+  static Future<String?> getCurrentUserId() async {
+    return await TokenRepository.getCurrentUserId().then((value) => value);
+  }
+
   static Future<User?> create(User user) async {
     User? retrievedUser;
 
@@ -24,6 +64,38 @@ class UserService {
     }
 
     return retrievedUser;
+  }
+
+  static Future<Team?> team() async {
+    Team? retrievedTeam;
+    try {
+      Response response = await Api().dio.get(
+            '/users/team',
+          );
+      debugPrint("retrievedTeam team(): ${response.data}");
+
+      retrievedTeam = Team.fromJson(response.data as Map<String, dynamic>);
+    } on DioError catch (_, e) {
+      debugPrint("error team(): ${e.toString()}");
+      return null;
+    }
+
+    debugPrint("retrievedTeam: $retrievedTeam");
+    return retrievedTeam;
+  }
+
+  static Future<String?> leaveTeam() async {
+    String? message;
+    try {
+      await Api().dio.patch('/users/leave-team');
+    } on DioError catch (err, stack) {
+      debugPrint("error: $stack");
+      debugPrint(err.response?.data);
+      if (err.response?.statusCode == HttpStatus.notFound) {
+        message = err.response?.data;
+      }
+    }
+    return message;
   }
 
   static Future<List<User>?> list() async {
@@ -79,6 +151,7 @@ class UserService {
       final tokens = response.data['tokens'];
       await TokenRepository.setAccessToken(tokens['access_token']);
       await TokenRepository.setRefreshToken(tokens['refresh_token']);
+      await TokenRepository.setCurrentUserId(response.data['_id']);
       debugPrint(await TokenRepository.getAccessToken());
       return null;
     } else if (response.statusCode == HttpStatus.badRequest) {
@@ -91,6 +164,7 @@ class UserService {
   static Future<void> logout() async {
     await TokenRepository.setAccessToken(null);
     await TokenRepository.setRefreshToken(null);
+    await TokenRepository.setCurrentUserId(null);
   }
 
   static Future<String?> resetPassword(String email) async {

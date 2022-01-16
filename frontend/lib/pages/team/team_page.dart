@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/models/team/team.dart';
 import 'package:frontend/models/user/user.dart';
+import 'package:frontend/pages/team/search_team_screen.dart';
 import 'package:frontend/services/team_service.dart';
 import 'package:frontend/services/user_service.dart';
 import 'package:frontend/widgets/team_card.dart';
@@ -25,31 +26,34 @@ class TeamPage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          FutureBuilder<List<Team>?>(
-            future: TeamService.list(),
-            builder:
-                (BuildContext context, AsyncSnapshot<List<Team>?> snapshot) {
+          FutureBuilder<Team?>(
+            future: UserService.team(),
+            builder: (BuildContext context, AsyncSnapshot<Team?> snapshot) {
               Widget child;
-              List<Team>? teams = snapshot.data;
-              if (snapshot.hasData && teams != null) {
-                child = SizedBox(
-                  height: 300.0,
-                  child: ListView.builder(
-                    itemCount: teams.length,
-                    itemBuilder: (_, i) => TeamCard(team: teams[i]),
-                  ),
-                );
-              } else if (snapshot.connectionState == ConnectionState.done) {
-                child = const Icon(
-                  Icons.error_outline,
-                  color: Colors.red,
-                  size: 60,
+              Team? userTeam = snapshot.data;
+              debugPrint(snapshot.hasData.toString());
+              if (snapshot.hasData && userTeam != null) {
+                child = Column(
+                  children: [
+                    const Text("Your Team"),
+                    TeamCard(team: userTeam),
+                  ],
                 );
               } else {
-                child = const Center(child: CircularProgressIndicator());
+                child = Container();
               }
               return child;
             },
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const SearchTeamScreen()),
+              );
+            },
+            child: const Text('Search Team'),
           ),
           FutureBuilder<List<User>?>(
             future: UserService.list(),
@@ -62,7 +66,7 @@ class TeamPage extends StatelessWidget {
                   height: 300.0,
                   child: ListView.builder(
                     itemCount: users.length,
-                    itemBuilder: (_, i) => UserCard(user: users[i]),
+                    itemBuilder: (_, i) => UserHorizontalCard(user: users[i]),
                   ),
                 );
               } else {

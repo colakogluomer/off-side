@@ -9,9 +9,8 @@ part of 'team.dart';
 Team _$TeamFromJson(Map<String, dynamic> json) => Team(
       id: json['_id'] as String?,
       name: json['name'] as String,
-      playerIds: (json['playersId'] as List<dynamic>)
-          .map((e) => User.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      playerIds:
+          (json['playersId'] as List<dynamic>).map((e) => e as String).toList(),
       founder: json['founder'] == null
           ? null
           : User.fromJson(json['founder'] as Map<String, dynamic>),

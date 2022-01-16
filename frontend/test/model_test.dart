@@ -6,6 +6,7 @@
 // tree, read text, and verify that the values of widget properties are correct.
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:frontend/models/match/match.dart';
 import 'package:frontend/models/team/team.dart';
 import 'package:frontend/models/user/user.dart';
 
@@ -28,24 +29,20 @@ void main() {
   });
 
   test('Deserialize user with team', () async {
-    final u = User.fromJson({
-      "_id": "61b4cff4a3b665dec3b8bb6f",
-      "name": "omer3434",
-      "password":
-          "bdbcbc97008bba7bb43115696cb2699baf2ff38998230f2b84cb84915a428fc2",
-      "email": "omercolakoglu52@gmail.com",
-      "createdAt": "2021-12-11T16:21:08.204Z",
-      "updatedAt": "2021-12-14T20:04:12.329Z",
-      "teamId": {
-        "_id": "61b4f968d4a853fa5546dbb7",
-        "name": "selamlar1",
-        "playersId": [
-          {"_id": "61b4cff4a3b665dec3b8bb6f", "name": "omer3434"}
-        ]
-      }
-    });
+    final u = User.fromJson(
+      {
+        "_id": "61d9cfd6467935d08fbe2fd2",
+        "name": "Daniel",
+        "password":
+            "d4c2aa342ba7fe97c0a49c248e4e85d3769481d6885d0a493b4e139fa2849386",
+        "email": "daniel@email.com",
+        "createdAt": "2022-01-08T17:54:30.941Z",
+        "updatedAt": "2022-01-15T20:13:07.976Z",
+        "teamId": "61a591e1dd9d6d3a2703ff8f"
+      },
+    );
 
-    expect(u.teamId?.playerIds[0].id, "61b4cff4a3b665dec3b8bb6f");
+    expect(u.teamId, "61a591e1dd9d6d3a2703ff8f");
   });
 
   test('Deserialize user with team', () async {
@@ -65,5 +62,23 @@ void main() {
     expect(t.name, "hellotry");
     expect(t.createdAt?.day, 11);
     expect(t.founder?.name, "omer3434");
+  });
+
+  test('Deserialize match', () async {
+    final m = MatchDto.fromJson(
+      {
+        "_id": "61dee2fe6fd0301c717f1d8c",
+        "teamsId": ["61ddfbefd17ef039dfe8b7fc", "61daeb010d81a001a600b621"],
+        "adress": "sasdas",
+        "date": "2022-01-18T20:00:00.000Z",
+        "createdAt": "2022-01-12T14:17:34.600Z",
+        "updatedAt": "2022-01-12T14:17:34.600Z"
+      },
+    );
+
+    expect(m.teamIds[1], "61daeb010d81a001a600b621");
+    expect(m.address, "sasdas");
+    expect(m.createdAt?.day, 12);
+    expect(m.date.day, 18);
   });
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/pages/match/map_test.dart';
+import 'package:frontend/pages/match/match_list_screen.dart';
 
 class MatchPage extends StatelessWidget {
   const MatchPage({Key? key}) : super(key: key);
@@ -11,14 +12,30 @@ class MatchPage extends StatelessWidget {
         title: const Text('Match page'),
       ),
       body: Center(
-          child: ElevatedButton(
+        child: ButtonBar(
+          alignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const MapTest()),
                 );
               },
-              child: const Text("Map test"))),
+              child: const Text("Map test"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const MatchList()),
+                );
+              },
+              child: const Text("Matches"),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
