@@ -12,6 +12,13 @@ const UserSchema = new mongoose.Schema(
     },
     position: String,
     level: String,
+    teamRequests: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "team",
+        autopopulate: { maxDepth: 2 },
+      },
+    ],
   },
   { timestamps: true, versionKey: false }
 );

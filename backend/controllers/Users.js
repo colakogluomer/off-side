@@ -176,6 +176,52 @@ const leaveTeam = async (req, res, next) => {
   }
 };
 
+const getTeamsRequests = async (req, res, next) => {
+  try {
+    const user = Users.get(req.user?._id);
+    if (!user) throw new ApiError("no user", httpStatus.NOT_FOUND);
+    const team = Teams.get(req.body.teamId);
+    if (!team) throw new ApiError("no team", httpStatus.NOT_FOUND);
+
+    if (user._id.toString() != team.founder.toString())
+      throw new ApiError(
+        "you have no acces to do this action.",
+        httpStatus.UNAUTHORIZED
+      );
+    if (!user.teamRequests)
+      res.status(httpStatus.OK).send("there is no request from any team");
+    res.status(httpStatus.OK).send(user.teamRequests);
+  } catch (error) {
+    next(error);
+  }
+};
+const acceptRequestFromTeam = async (req, res, next) => {
+  try {
+    try {
+      const team = await Teams.get(req.body.teamId);
+      if (!team) throw new ApiError("no team", httpStatus.NOT_FOUND);
+      const user = await Users.get(req.user?._id);
+      if (user.teamId)
+        throw new ApiError("already joined a team", httpStatus.BAD_REQUEST);
+      const acceptedUser = await Users.update(user._id, { teamId: team });
+
+      acceptedUser.teamRequests = await acceptedUser.teamRequests.filter(
+        (obj) => obj._id.toString() != team._id.toString()
+      );
+      await acceptedUser.save();
+
+      team.playersId.push(acceptedUser);
+
+      await team.save();
+      res.status(httpStatus.OK).send(acceptedUser);
+    } catch (error) {
+      next(error);
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   changePassword,
   getAll,
@@ -188,4 +234,6 @@ module.exports = {
   updateProfileImage,
   leaveTeam,
   getUser,
+  getTeamsRequests,
+  acceptRequestFromTeam,
 };
