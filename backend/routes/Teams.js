@@ -10,6 +10,8 @@ const {
   getOne,
   remove,
   join,
+  getUsersApplications,
+  acceptUserToTeam,
 } = require("../controllers/Teams");
 
 router.route("/").get(authenticate, getAll);
@@ -23,5 +25,7 @@ router
 
 router.route("/:id").delete(authenticate, remove);
 router.route("/join").post(authenticate, join);
+router.route("/check-applications").get(authenticate, getUsersApplications);
+router.route("/accept-player").post(authenticate, acceptUserToTeam);
 
 module.exports = router;

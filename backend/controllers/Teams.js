@@ -82,16 +82,65 @@ const join = async (req, res, next) => {
     const team = await Teams.get(req.body?.teamId);
     if (!team) throw new ApiError("Team does not exist", httpStatus.NOT_FOUND);
     const user = await Users.get(req.user?._id);
-    console.log(user);
     if (user.teamId)
       throw new ApiError(
         "You have already joined a team",
         httpStatus.BAD_REQUEST
       );
-    const joinedUser = await Users.update(user._id, { teamId: team });
-    team.playersId.push(joinedUser);
-    await team.save();
 
+    team.userRequests.push(user);
+    await team.save();
+    team.playersId.push(user);
+    await team.save();
+    console.log(user);
+
+    res.status(httpStatus.OK).send(team);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getUsersApplications = async (req, res, next) => {
+  try {
+    const team = await Teams.get(req.body.teamId);
+    if (!team) throw new ApiError("no team", httpStatus.NOT_FOUND);
+    if ((req.user?._id).toString() !== team.founder._id.toString())
+      throw new ApiError(
+        "you have no acces to do this action.",
+        httpStatus.UNAUTHORIZED
+      );
+
+    if (team.userRequests == [].toString())
+      res.status(httpStatus.OK).send("there is no request from any user");
+    else res.status(httpStatus.OK).send(team.userRequests);
+  } catch (error) {
+    next(error);
+  }
+};
+const acceptUserToTeam = async (req, res, next) => {
+  try {
+    const team = await Teams.get(req.body.teamId);
+    if (!team) throw new ApiError("no team", httpStatus.NOT_FOUND);
+    if ((req.user?._id).toString() !== team.founder._id.toString())
+      throw new ApiError(
+        "you have no acces to do this action.",
+        httpStatus.UNAUTHORIZED
+      );
+
+    const user = await Users.get(req.body.userId);
+    if (!user) throw new ApiError("no user", httpStatus.NOT_FOUND);
+
+    if (user.teamId)
+      throw new ApiError("already joined a team", httpStatus.BAD_REQUEST);
+
+    const acceptedUser = await Users.update(user._id, { teamId: team });
+
+    await team.playersId.push(acceptedUser);
+    console.log(`team.userRequests`, team.userRequests);
+    team.userRequests = await team.userRequests.filter(
+      (obj) => obj._id.toString() != acceptedUser._id.toString()
+    );
+    await team.save();
     res.status(httpStatus.OK).send(team);
   } catch (error) {
     next(error);
@@ -105,4 +154,6 @@ module.exports = {
   update,
   remove,
   join,
+  getUsersApplications,
+  acceptUserToTeam,
 };
