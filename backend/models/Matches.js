@@ -5,6 +5,7 @@ const MatchSchema = new mongoose.Schema(
       {
         type: mongoose.Types.ObjectId,
         ref: "team",
+        autopopulate: { maxDepth: 2 },
       },
     ],
     adress: String,
@@ -12,4 +13,7 @@ const MatchSchema = new mongoose.Schema(
   },
   { timestamps: true, versionKey: false }
 );
+
+MatchSchema.plugin(require("mongoose-autopopulate"));
+
 module.exports = mongoose.model("match", MatchSchema);

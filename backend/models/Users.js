@@ -8,10 +8,13 @@ const UserSchema = new mongoose.Schema(
     teamId: {
       type: mongoose.Types.ObjectId,
       ref: "team",
+      autopopulate: { maxDepth: 2 },
     },
     position: String,
     level: String,
   },
   { timestamps: true, versionKey: false }
 );
+UserSchema.plugin(require("mongoose-autopopulate"));
+
 module.exports = mongoose.model("user", UserSchema);

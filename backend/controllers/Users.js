@@ -157,7 +157,7 @@ const updateProfileImage = async (req, res, next) => {
 
 const leaveTeam = async (req, res, next) => {
   try {
-    const user = await Users.getUserPopulate(req.user?._id);
+    const user = await Users.get(req.user?._id);
 
     if (!user) throw new ApiError("no user", httpStatus.NOT_FOUND);
     if (!user.teamId)

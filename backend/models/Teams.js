@@ -7,16 +7,19 @@ const TeamSchema = new mongoose.Schema(
       {
         type: mongoose.Types.ObjectId,
         ref: "user",
+        autopopulate: { maxDepth: 2 },
       },
     ],
     founder: {
       type: mongoose.Types.ObjectId,
       ref: "user",
+      autopopulate: { maxDepth: 2 },
     },
     matches: [
       {
         type: mongoose.Types.ObjectId,
         ref: "match",
+        autopopulate: { maxDepth: 2 },
       },
     ],
   },
@@ -30,5 +33,7 @@ TeamSchema.post("save", (doc) => {
     message: doc,
   });
 });
+
+TeamSchema.plugin(require("mongoose-autopopulate"));
 
 module.exports = mongoose.model("team", TeamSchema);

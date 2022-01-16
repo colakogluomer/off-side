@@ -5,7 +5,7 @@ const httpStatus = require("http-status");
 const ApiError = require("../errors/ApiError");
 const getOne = async (req, res, next) => {
   try {
-    const team = await Teams.getOneTeamPopulate(req.body.name);
+    const team = await Teams.getOne({ name: req.body.name });
     if (!team) throw new ApiError("no team", httpStatus.NOT_FOUND);
     res.status(httpStatus.OK).send(team);
   } catch (error) {
@@ -27,7 +27,7 @@ const create = async (req, res, next) => {
     if (req.user.teamId)
       throw new ApiError("you have already team", httpStatus.BAD_REQUEST);
     req.body.founder = req.user;
-    const user = await Users.getUserPopulate(req.user?._id);
+    const user = await Users.get(req.user?._id);
 
     if (!user) throw new ApiError("no user", httpStatus.NOT_FOUND);
     const team = await Teams.insert(req.body);
