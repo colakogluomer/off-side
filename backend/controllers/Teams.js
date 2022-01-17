@@ -146,7 +146,28 @@ const acceptUserToTeam = async (req, res, next) => {
     next(error);
   }
 };
+const rejectRequestFromUser = async (req, res, next) => {
+  try {
+    const team = await Teams.get(req.body.teamId);
+    if (!team) throw new ApiError("no team", httpStatus.NOT_FOUND);
+    if ((req.user?._id).toString() !== team.founder._id.toString())
+      throw new ApiError(
+        "you have no acces to do this action.",
+        httpStatus.UNAUTHORIZED
+      );
 
+    const user = await Users.get(req.body.userId);
+    if (!user) throw new ApiError("no user", httpStatus.NOT_FOUND);
+
+    team.userRequests = await team.userRequests.filter(
+      (obj) => obj._id.toString() != acceptedUser._id.toString()
+    );
+    await team.save();
+    res.status(httpStatus.OK).send(team);
+  } catch (error) {
+    next(error);
+  }
+};
 module.exports = {
   getOne,
   getAll,
@@ -156,4 +177,5 @@ module.exports = {
   join,
   getUsersApplications,
   acceptUserToTeam,
+  rejectRequestFromUser,
 };
