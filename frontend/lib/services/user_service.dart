@@ -122,6 +122,20 @@ class UserService {
     return retrievedUsers;
   }
 
+  static Future<List<User>?> getUserListFromIds(List<String> ids) async {
+    List<User>? retrievedUsers = [];
+
+    for (final id in ids) {
+      final user = await getById(id);
+      if (user != null) {
+        retrievedUsers.add(user);
+      }
+    }
+
+    debugPrint('retrievedUsers ${retrievedUsers.toString()}');
+    return retrievedUsers;
+  }
+
   static Future<String?> register(
       {required String? email,
       required String? password,

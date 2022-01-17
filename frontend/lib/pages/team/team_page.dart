@@ -36,7 +36,7 @@ class TeamPage extends StatelessWidget {
                 child = Column(
                   children: [
                     const Text("Your Team"),
-                    TeamCard(team: userTeam),
+                    TeamHorizontalCard(team: userTeam),
                   ],
                 );
               } else {

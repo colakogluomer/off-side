@@ -91,7 +91,7 @@ class UserStackedCard extends StatelessWidget {
                 Team? userTeam = snapshot.data;
                 debugPrint(snapshot.hasData.toString());
                 if (snapshot.hasData && userTeam != null) {
-                  child = TeamCard(team: userTeam);
+                  child = TeamHorizontalCard(team: userTeam);
                 } else {
                   child = Container();
                 }
