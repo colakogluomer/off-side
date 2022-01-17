@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/models/user/user.dart';
-import 'package:frontend/widgets/user_card.dart';
+import 'package:frontend/models/team/team.dart';
+import 'package:frontend/widgets/team_card.dart';
 
-class UserProfileScreen extends StatelessWidget {
-  final User user;
+class TeamScreen extends StatelessWidget {
+  final Team team;
 
-  const UserProfileScreen({Key? key, required this.user}) : super(key: key);
+  const TeamScreen({Key? key, required this.team}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class UserProfileScreen extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            UserStackedCard(user: user),
+            TeamStackedCard(team: team),
             ButtonBar(
               alignment: MainAxisAlignment.end,
               children: [

@@ -4,6 +4,7 @@ import 'package:frontend/models/user/user.dart';
 import 'package:frontend/services/team_service.dart';
 import 'package:frontend/services/user_service.dart';
 import 'package:frontend/utils/snackbar_service.dart';
+import 'package:frontend/widgets/team_screen.dart';
 import 'package:frontend/widgets/user_card.dart';
 
 class TeamHorizontalCard extends StatelessWidget {
@@ -17,23 +18,34 @@ class TeamHorizontalCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ListTile(
-            leading: const Icon(Icons.people),
-            title: Text(team.name),
-            subtitle: Text(team.founder?.name ?? ""),
-            trailing: TextButton(
-              child: const Text("Join"),
-              onPressed: () async {
-                String? message = await TeamService.join(team.id ?? "");
-                message ??= "You joined the team: ${team.name}";
-                showSnackBar(context, message);
-              },
+      child: InkWell(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => TeamScreen(
+                      team: team,
+                    )),
+          );
+        },
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: const Icon(Icons.people),
+              title: Text(team.name),
+              subtitle: Text(team.founder?.name ?? ""),
+              trailing: TextButton(
+                child: const Text("Join"),
+                onPressed: () async {
+                  String? message = await TeamService.join(team.id ?? "");
+                  message ??= "You joined the team: ${team.name}";
+                  showSnackBar(context, message);
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -68,21 +80,7 @@ class TeamStackedCard extends StatelessWidget {
           const ListTile(
             title: Text("Founder"),
           ),
-          if (team.founder != null)
-            FutureBuilder<User?>(
-              future: UserService.getById(team.founder),
-              builder: (BuildContext context, AsyncSnapshot<Team?> snapshot) {
-                Widget child;
-                Team? userTeam = snapshot.data;
-                debugPrint(snapshot.hasData.toString());
-                if (snapshot.hasData && userTeam != null) {
-                  child = TeamHorizontalCard(team: userTeam);
-                } else {
-                  child = Container();
-                }
-                return child;
-              },
-            ),
+          if (team.founder != null) UserHorizontalCard(user: team.founder!),
           FutureBuilder<List<User>?>(
             future: UserService.getUserListFromIds(team.playerIds),
             builder:
