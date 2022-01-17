@@ -15,7 +15,7 @@ const getOne = async (req, res, next) => {
 
 const getAll = async (req, res, next) => {
   try {
-    const teams = await Teams.load();
+    const teams = await Teams.load({ autopopulate: false });
     if (!teams) throw new ApiError("no teams", httpStatus.NOT_FOUND);
     res.status(httpStatus.OK).send(teams);
   } catch (error) {
@@ -89,8 +89,6 @@ const join = async (req, res, next) => {
       );
 
     team.userRequests.push(user);
-    await team.save();
-    team.playersId.push(user);
     await team.save();
     console.log(user);
 
@@ -168,6 +166,30 @@ const rejectRequestFromUser = async (req, res, next) => {
     next(error);
   }
 };
+const invitePlayer = async (req, res, next) => {
+  try {
+    const team = await Teams.get(req.body?.teamId);
+    if (!team) throw new ApiError("Team does not exist", httpStatus.NOT_FOUND);
+    const invitedUser = await Users.get(req.body?.userId);
+    if (!invitedUser) throw new ApiError("no user", httpStatus.NOT_FOUND);
+
+    const user = await Users.get(req.user?._id);
+    if (!user) throw new ApiError("no user", httpStatus.NOT_FOUND);
+    if ((req.user?._id).toString() !== team.founder._id.toString())
+      throw new ApiError(
+        "you have no acces to do this action.",
+        httpStatus.UNAUTHORIZED
+      );
+
+    invitedUser.teamRequests.push(team);
+    await invitedUser.save();
+
+    res.status(httpStatus.OK).send(team);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getOne,
   getAll,
@@ -178,4 +200,5 @@ module.exports = {
   getUsersApplications,
   acceptUserToTeam,
   rejectRequestFromUser,
+  invitePlayer,
 };
