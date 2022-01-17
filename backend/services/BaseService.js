@@ -19,9 +19,9 @@ class BaseService {
     }
   }
 
-  async load() {
+  async load(data) {
     try {
-      return this.model.find();
+      return await this.model.find({}, {}, data);
     } catch (error) {
       throw new ApiError(
         "Something went wrong while loading datas from database ",

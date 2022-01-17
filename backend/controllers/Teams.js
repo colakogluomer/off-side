@@ -15,7 +15,7 @@ const getOne = async (req, res, next) => {
 
 const getAll = async (req, res, next) => {
   try {
-    const teams = await Teams.load({ autopopulate: false });
+    const teams = await Teams.load();
     if (!teams) throw new ApiError("no teams", httpStatus.NOT_FOUND);
     res.status(httpStatus.OK).send(teams);
   } catch (error) {
@@ -184,7 +184,7 @@ const invitePlayer = async (req, res, next) => {
     invitedUser.teamRequests.push(team);
     await invitedUser.save();
 
-    res.status(httpStatus.OK).send(team);
+    res.status(httpStatus.OK).send(invitedUser);
   } catch (error) {
     next(error);
   }

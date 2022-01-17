@@ -167,7 +167,9 @@ const leaveTeam = async (req, res, next) => {
     console.log(team);
     user.teamId = undefined;
 
-    team.playersId = team.playersId.filter((id) => id.toString() != user._id);
+    team.playersId = team.playersId.filter(
+      (obj) => obj.id.toString() != user._id
+    );
     await user.save();
     await team.save();
     res.status(httpStatus.OK).send(team);
