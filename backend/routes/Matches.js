@@ -23,6 +23,6 @@ router
   .post(authenticate, acceptMatchInvitation);
 router
   .route("/reject-match-invitation")
-  .post(authenticate, acceptMatchInvitation);
+  .post(authenticate, rejectMatchInvitation);
 
 module.exports = router;
