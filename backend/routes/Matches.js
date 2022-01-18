@@ -6,7 +6,6 @@ const authenticate = require("../middlewares/authenticate");
 const router = express.Router();
 
 const {
-  create,
   getAll,
   remove,
   getMatches,
@@ -15,7 +14,6 @@ const {
   rejectMatchInvitation,
 } = require("../controllers/Matches");
 
-router.route("/").post(authenticate, create);
 router.route("/").get(authenticate, getAll);
 router.route("/:id").delete(authenticate, remove);
 router.route("/match").get(authenticate, getMatches);
