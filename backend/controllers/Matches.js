@@ -4,15 +4,28 @@ const httpStatus = require("http-status");
 const Teams = require("../services/Teams");
 const ApiError = require("../errors/ApiError");
 
-const getAll = async (req, res) => {
-  const matches = await Matches.load();
-  res.status(httpStatus.OK).send(matches);
+const getAll = async (req, res, next) => {
+  try {
+    const matches = await Matches.load();
+    if (!matches) throw new ApiError("no matches", httpStatus.NOT_FOUND);
+    res.status(httpStatus.OK).send(matches);
+  } catch (error) {
+    next(error);
+  }
 };
 
 const getMatches = async (req, res, next) => {
-  const team = await Teams.get(req.body.teamId);
-  const match = await Matches.getCon({ teamsId: team._id });
-  res.status(httpStatus.OK).send(match);
+  try {
+    const team = await Teams.get(req.body.teamId);
+    if (!team) throw new ApiError("no team", httpStatus.NOT_FOUND);
+
+    const matches = await Matches.getCon({ teamsId: team._id });
+    if (!matches) throw new ApiError("no matches", httpStatus.NOT_FOUND);
+
+    res.status(httpStatus.OK).send(matches);
+  } catch (error) {
+    next(error);
+  }
 };
 
 const remove = async (req, res, next) => {
