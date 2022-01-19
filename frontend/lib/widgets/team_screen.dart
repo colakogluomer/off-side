@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/models/team/team.dart';
+import 'package:frontend/services/team_service.dart';
+import 'package:frontend/utils/snackbar_service.dart';
 import 'package:frontend/widgets/team_card.dart';
 
 class TeamScreen extends StatelessWidget {
@@ -22,12 +24,16 @@ class TeamScreen extends StatelessWidget {
               alignment: MainAxisAlignment.end,
               children: [
                 ElevatedButton(
-                  onPressed: () => {},
-                  child: const Text("Contact"),
+                  onPressed: null,
+                  child: const Text("Challenge"),
                 ),
                 ElevatedButton(
-                  onPressed: () => {},
-                  child: const Text("Invite"),
+                  onPressed: () async {
+                    String? message = await TeamService.join(team.id ?? "");
+                    message ??= "You joined the team: ${team.name}";
+                    showSnackBar(context, message);
+                  },
+                  child: const Text("Join"),
                 ),
               ],
             ),

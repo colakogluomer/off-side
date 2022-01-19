@@ -11,74 +11,171 @@ import 'package:frontend/models/team/team.dart';
 import 'package:frontend/models/user/user.dart';
 
 void main() {
-  test('Deserialize user', () async {
+  test('Deserialize user with team', () async {
     final u = User.fromJson({
-      "_id": "61a584f45dae7dcd664dd5dc",
-      "name": "qwasdasdasd",
+      "_id": "61e6f2e895fbe5eefa3e3f35",
+      "name": "seher1",
       "password":
-          "a19acdd61933930b9fb30fc1b2cbd95a01a983c1c6b7dca9fe85a0be5b09ff3a",
-      "email": "omer123@gmail.com",
-      "createdAt": "2021-11-30T01:57:08.291Z",
-      "updatedAt": "2021-11-30T01:57:08.291Z"
+          "29fc2c32ce9ad661fdd5fae179fe138f2d8d4f1ad3cc05d8333ef117ae6d6084",
+      "email": "seher1@hotmail.com",
+      "teamRequests": [],
+      "createdAt": "2022-01-18T17:03:36.841Z",
+      "updatedAt": "2022-01-18T17:04:04.975Z",
+      "teamId": {
+        "_id": "61e6f30495fbe5eefa3e3f39",
+        "name": "seherin2",
+        "playersId": [
+          {
+            "_id": "61e6f2e895fbe5eefa3e3f35",
+            "name": "seher1",
+            "password":
+                "29fc2c32ce9ad661fdd5fae179fe138f2d8d4f1ad3cc05d8333ef117ae6d6084",
+            "email": "seher1@hotmail.com",
+            "teamRequests": [],
+            "createdAt": "2022-01-18T17:03:36.841Z",
+            "updatedAt": "2022-01-18T17:04:04.975Z",
+            "teamId": "61e6f30495fbe5eefa3e3f39"
+          },
+          {
+            "_id": "61e6f1e695fbe5eefa3e3f24",
+            "name": "seher2",
+            "password":
+                "29fc2c32ce9ad661fdd5fae179fe138f2d8d4f1ad3cc05d8333ef117ae6d6084",
+            "email": "seher2@hotmail.com",
+            "teamRequests": [],
+            "createdAt": "2022-01-18T16:59:18.388Z",
+            "updatedAt": "2022-01-18T17:05:55.093Z",
+            "teamId": "61e6f30495fbe5eefa3e3f39"
+          }
+        ],
+        "founder": {
+          "_id": "61e6f2e895fbe5eefa3e3f35",
+          "name": "seher1",
+          "password":
+              "29fc2c32ce9ad661fdd5fae179fe138f2d8d4f1ad3cc05d8333ef117ae6d6084",
+          "email": "seher1@hotmail.com",
+          "teamRequests": [],
+          "createdAt": "2022-01-18T17:03:36.841Z",
+          "updatedAt": "2022-01-18T17:04:04.975Z",
+          "teamId": "61e6f30495fbe5eefa3e3f39"
+        },
+        "matches": [],
+        "userRequests": [],
+        "matchRequests": [],
+        "createdAt": "2022-01-18T17:04:04.722Z",
+        "updatedAt": "2022-01-18T17:05:55.337Z"
+      }
     });
 
-    expect(u.name, "qwasdasdasd");
-    expect(u.id, "61a584f45dae7dcd664dd5dc");
-    expect(u.email, "omer123@gmail.com");
-    expect(u.createdAt?.day, 30);
+    expect(u.teamId?.playerIds[1].name, "seher2");
   });
 
-  test('Deserialize user with team', () async {
-    final u = User.fromJson(
-      {
-        "_id": "61d9cfd6467935d08fbe2fd2",
-        "name": "Daniel",
+  test('Deserialize team', () async {
+    final t = Team.fromJson({
+      "_id": "61e6f30495fbe5eefa3e3f39",
+      "name": "seherin2",
+      "playersId": [
+        {
+          "_id": "61e6f2e895fbe5eefa3e3f35",
+          "name": "seher1",
+          "password":
+              "29fc2c32ce9ad661fdd5fae179fe138f2d8d4f1ad3cc05d8333ef117ae6d6084",
+          "email": "seher1@hotmail.com",
+          "teamRequests": [],
+          "createdAt": "2022-01-18T17:03:36.841Z",
+          "updatedAt": "2022-01-18T17:04:04.975Z",
+          "teamId": "61e6f30495fbe5eefa3e3f39"
+        },
+        {
+          "_id": "61e6f1e695fbe5eefa3e3f24",
+          "name": "seher2",
+          "password":
+              "29fc2c32ce9ad661fdd5fae179fe138f2d8d4f1ad3cc05d8333ef117ae6d6084",
+          "email": "seher2@hotmail.com",
+          "teamRequests": [],
+          "createdAt": "2022-01-18T16:59:18.388Z",
+          "updatedAt": "2022-01-18T17:05:55.093Z",
+          "teamId": "61e6f30495fbe5eefa3e3f39"
+        }
+      ],
+      "founder": {
+        "_id": "61e6f2e895fbe5eefa3e3f35",
+        "name": "seher1",
         "password":
-            "d4c2aa342ba7fe97c0a49c248e4e85d3769481d6885d0a493b4e139fa2849386",
-        "email": "daniel@email.com",
-        "createdAt": "2022-01-08T17:54:30.941Z",
-        "updatedAt": "2022-01-15T20:13:07.976Z",
-        "teamId": "61a591e1dd9d6d3a2703ff8f"
+            "29fc2c32ce9ad661fdd5fae179fe138f2d8d4f1ad3cc05d8333ef117ae6d6084",
+        "email": "seher1@hotmail.com",
+        "teamRequests": [],
+        "createdAt": "2022-01-18T17:03:36.841Z",
+        "updatedAt": "2022-01-18T17:04:04.975Z",
+        "teamId": "61e6f30495fbe5eefa3e3f39"
       },
-    );
+      "matches": [],
+      "userRequests": [],
+      "matchRequests": [],
+      "createdAt": "2022-01-18T17:04:04.722Z",
+      "updatedAt": "2022-01-18T17:05:55.337Z"
+    });
 
-    expect(u.teamId, "61a591e1dd9d6d3a2703ff8f");
-  });
-
-  test('Deserialize user with team', () async {
-    final t = Team.fromJson(
-      {
-        "_id": "61b4d045a3b665dec3b8bb72",
-        "name": "hellotry",
-        "playersId": [],
-        "founder": {"_id": "61b4cff4a3b665dec3b8bb6f", "name": "omer3434"},
-        "createdAt": "2021-12-11T16:22:29.573Z",
-        "updatedAt": "2021-12-11T16:22:29.573Z"
-      },
-    );
-
-    expect(t.playerIds, []);
-    expect(t.id, "61b4d045a3b665dec3b8bb72");
-    expect(t.name, "hellotry");
-    expect(t.createdAt?.day, 11);
-    expect(t.founder?.name, "omer3434");
+    expect(t.playerIds.length, 2);
+    expect(t.founder.name, "seher1");
   });
 
   test('Deserialize match', () async {
     final m = MatchDto.fromJson(
       {
-        "_id": "61dee2fe6fd0301c717f1d8c",
-        "teamsId": ["61ddfbefd17ef039dfe8b7fc", "61daeb010d81a001a600b621"],
+        "_id": "61dedd322fe5a2230f5c7345",
+        "teamsId": [
+          {
+            "matchRequests": [],
+            "_id": "61daeb010d81a001a600b621",
+            "name": "Daniel test team",
+            "playersId": [
+              {
+                "teamRequests": [],
+                "_id": "61d96d1fd32805b9a2727742",
+                "name": "Daniel",
+                "password":
+                    "aded05878c99323a4cad796597ba240c3fa876146a2befe89ffd7f26cda74be1",
+                "email": "daniel@email.com",
+                "createdAt": "2022-01-08T10:53:19.805Z",
+                "updatedAt": "2022-01-09T14:02:41.159Z",
+                "teamId": "61daeb010d81a001a600b621"
+              },
+              {
+                "_id": "61df1d401a7499b0c88dab30",
+                "name": "emery1",
+                "password":
+                    "3ab2a04500778313dc9a79b2d436f0a096534664783a83750def6961b520e324",
+                "email": "omer1234567891@hotmail.com",
+                "createdAt": "2022-01-12T18:26:08.158Z",
+                "updatedAt": "2022-01-16T16:59:12.449Z",
+                "teamRequests": []
+              }
+            ],
+            "founder": {
+              "teamRequests": [],
+              "_id": "61d96d1fd32805b9a2727742",
+              "name": "Daniel",
+              "password":
+                  "aded05878c99323a4cad796597ba240c3fa876146a2befe89ffd7f26cda74be1",
+              "email": "daniel@email.com",
+              "createdAt": "2022-01-08T10:53:19.805Z",
+              "updatedAt": "2022-01-09T14:02:41.159Z",
+              "teamId": "61daeb010d81a001a600b621"
+            },
+            "createdAt": "2022-01-09T14:02:41.058Z",
+            "updatedAt": "2022-01-13T10:12:06.685Z",
+            "matchs": ["61dee8022d65e654b605e9ff"],
+            "matches": [],
+            "userRequests": []
+          }
+        ],
         "adress": "sasdas",
-        "date": "2022-01-18T20:00:00.000Z",
-        "createdAt": "2022-01-12T14:17:34.600Z",
-        "updatedAt": "2022-01-12T14:17:34.600Z"
+        "createdAt": "2022-01-12T13:52:50.467Z",
+        "updatedAt": "2022-01-12T13:52:50.467Z"
       },
     );
 
-    expect(m.teamIds[1], "61daeb010d81a001a600b621");
-    expect(m.address, "sasdas");
-    expect(m.createdAt?.day, 12);
-    expect(m.date.day, 18);
+    expect(m.teamIds[1].playerIds[0], "Daniel");
   });
 }

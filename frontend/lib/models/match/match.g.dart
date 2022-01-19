@@ -8,8 +8,9 @@ part of 'match.dart';
 
 MatchDto _$MatchDtoFromJson(Map<String, dynamic> json) => MatchDto(
       id: json['_id'] as String?,
-      teamIds:
-          (json['teamsId'] as List<dynamic>).map((e) => e as String).toList(),
+      teamIds: (json['teamsId'] as List<dynamic>)
+          .map((e) => Team.fromJson(e as Map<String, dynamic>))
+          .toList(),
       address: json['adress'] as String,
       date: DateTime.parse(json['date'] as String),
       createdAt: json['createdAt'] == null

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/models/team/team.dart';
-import 'package:frontend/models/user/user.dart';
 import 'package:frontend/services/team_service.dart';
-import 'package:frontend/services/user_service.dart';
 import 'package:frontend/utils/snackbar_service.dart';
 import 'package:frontend/widgets/team_screen.dart';
 import 'package:frontend/widgets/user_card.dart';
@@ -34,7 +32,7 @@ class TeamHorizontalCard extends StatelessWidget {
             ListTile(
               leading: const Icon(Icons.people),
               title: Text(team.name),
-              subtitle: Text(team.founder?.name ?? ""),
+              subtitle: Text(team.founder.name),
               trailing: TextButton(
                 child: const Text("Join"),
                 onPressed: () async {
@@ -65,41 +63,20 @@ class TeamStackedCard extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       child: Column(
         children: [
-          SizedBox(
-            width: MediaQuery.of(context).size.width,
-            height: 300,
-            child: Image.asset(
-              'images/avatar_placeholder.png',
-              fit: BoxFit.fitWidth,
-            ),
-          ),
           const SizedBox(height: 15.0),
-          ListTile(
-            title: Text(team.name),
-          ),
+          ListTile(title: Text(team.name)),
           const ListTile(
             title: Text("Founder"),
           ),
-          if (team.founder != null) UserHorizontalCard(user: team.founder!),
-          FutureBuilder<List<User>?>(
-            future: UserService.getUserListFromIds(team.playerIds),
-            builder:
-                (BuildContext context, AsyncSnapshot<List<User>?> snapshot) {
-              Widget child;
-              List<User>? users = snapshot.data;
-              if (snapshot.hasData && users != null) {
-                child = SizedBox(
-                  height: 300.0,
-                  child: ListView.builder(
-                    itemCount: users.length,
-                    itemBuilder: (_, i) => UserHorizontalCard(user: users[i]),
-                  ),
-                );
-              } else {
-                child = const Center(child: CircularProgressIndicator());
-              }
-              return child;
-            },
+          UserHorizontalCard(user: team.founder),
+          ListTile(title: Text("Players")),
+          SizedBox(
+            height: 300.0,
+            child: ListView.builder(
+              itemCount: team.playerIds.length,
+              itemBuilder: (_, i) =>
+                  UserHorizontalCard(user: team.playerIds[i]),
+            ),
           ),
         ],
       ),

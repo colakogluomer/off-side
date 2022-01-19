@@ -197,26 +197,39 @@ const getTeamsRequests = async (req, res, next) => {
 };
 const acceptRequestFromTeam = async (req, res, next) => {
   try {
-    try {
-      const team = await Teams.get(req.body.teamId);
-      if (!team) throw new ApiError("no team", httpStatus.NOT_FOUND);
-      const user = await Users.get(req.user?._id);
-      if (user.teamId)
-        throw new ApiError("already joined a team", httpStatus.BAD_REQUEST);
-      const acceptedUser = await Users.update(user._id, { teamId: team });
+    const team = await Teams.get(req.body.teamId);
+    if (!team) throw new ApiError("no team", httpStatus.NOT_FOUND);
+    const user = await Users.get(req.user?._id);
+    if (!user) throw new ApiError("no user", httpStatus.NOT_FOUND);
 
-      acceptedUser.teamRequests = await acceptedUser.teamRequests.filter(
-        (obj) => obj._id.toString() != team._id.toString()
-      );
-      await acceptedUser.save();
+    if (user.teamId)
+      throw new ApiError("already joined a team", httpStatus.BAD_REQUEST);
+    const acceptedUser = await Users.update(user._id, { teamId: team });
 
-      team.playersId.push(acceptedUser);
+    acceptedUser.teamRequests = await acceptedUser.teamRequests.filter(
+      (obj) => obj._id.toString() != team._id.toString()
+    );
+    await acceptedUser.save();
 
-      await team.save();
-      res.status(httpStatus.OK).send(acceptedUser);
-    } catch (error) {
-      next(error);
-    }
+    team.playersId.push(acceptedUser);
+
+    await team.save();
+    res.status(httpStatus.OK).send(acceptedUser);
+  } catch (error) {
+    next(error);
+  }
+};
+const rejectRequestFromTeam = async (req, res, next) => {
+  try {
+    const team = await Teams.get(req.body.teamId);
+    if (!team) throw new ApiError("no team", httpStatus.NOT_FOUND);
+    const user = await Users.get(req.user?._id);
+    if (!user) throw new ApiError("no user", httpStatus.NOT_FOUND);
+    user.teamRequests = await user.teamRequests.filter(
+      (obj) => obj._id.toString() != team._id.toString()
+    );
+    await user.save();
+    res.status(httpStatus.OK).send(user);
   } catch (error) {
     next(error);
   }
@@ -236,4 +249,5 @@ module.exports = {
   getUser,
   getTeamsRequests,
   acceptRequestFromTeam,
+  rejectRequestFromTeam,
 };

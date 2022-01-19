@@ -22,11 +22,11 @@ class UserProfileScreen extends StatelessWidget {
               alignment: MainAxisAlignment.end,
               children: [
                 ElevatedButton(
-                  onPressed: () => {},
+                  onPressed: null,
                   child: const Text("Contact"),
                 ),
                 ElevatedButton(
-                  onPressed: () => {},
+                  onPressed: null,
                   child: const Text("Invite"),
                 ),
               ],

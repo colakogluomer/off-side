@@ -18,6 +18,7 @@ const {
   getUser,
   getTeamsRequests,
   acceptRequestFromTeam,
+  rejectRequestFromTeam,
 } = require("../controllers/Users");
 
 router.get("/", getAll);
@@ -40,4 +41,5 @@ router.route("/update-profile-image").post(authenticate, updateProfileImage);
 router.route("/leave-team").patch(authenticate, leaveTeam);
 router.route("/check-team-requests").get(authenticate, getTeamsRequests);
 router.route("/accept-team").post(authenticate, acceptRequestFromTeam);
+router.route("/reject-team").delete(authenticate, rejectRequestFromTeam);
 module.exports = router;

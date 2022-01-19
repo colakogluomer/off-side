@@ -1,3 +1,4 @@
+import 'package:frontend/models/team/team.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'match.g.dart';
@@ -7,7 +8,7 @@ class MatchDto {
   @JsonKey(name: '_id')
   String? id;
   @JsonKey(name: 'teamsId')
-  List<String> teamIds;
+  List<Team> teamIds;
   @JsonKey(name: 'adress')
   String address;
   DateTime date;
