@@ -15,7 +15,7 @@ const getOne = async (req, res, next) => {
 
 const getAll = async (req, res, next) => {
   try {
-    const teams = await Teams.load({ autopopulate: false });
+    const teams = await Teams.load();
     if (!teams) throw new ApiError("no teams", httpStatus.NOT_FOUND);
     res.status(httpStatus.OK).send(teams);
   } catch (error) {
@@ -100,7 +100,9 @@ const join = async (req, res, next) => {
 
 const getUsersApplications = async (req, res, next) => {
   try {
-    const team = await Teams.get(req.body.teamId);
+    const user = await Users.get(req.user?._id);
+    if (!user) throw new ApiError("no user", httpStatus.NOT_FOUND);
+    const team = await Teams.get(user.teamId);
     if (!team) throw new ApiError("no team", httpStatus.NOT_FOUND);
     if ((req.user?._id).toString() !== team.founder._id.toString())
       throw new ApiError(
@@ -117,7 +119,9 @@ const getUsersApplications = async (req, res, next) => {
 };
 const acceptUserToTeam = async (req, res, next) => {
   try {
-    const team = await Teams.get(req.body.teamId);
+    const founder = await Users.get(req.user?._id);
+    if (!founder) throw new ApiError("no user", httpStatus.NOT_FOUND);
+    const team = await Teams.get(founder.teamId);
     if (!team) throw new ApiError("no team", httpStatus.NOT_FOUND);
     if ((req.user?._id).toString() !== team.founder._id.toString())
       throw new ApiError(
@@ -146,7 +150,9 @@ const acceptUserToTeam = async (req, res, next) => {
 };
 const rejectRequestFromUser = async (req, res, next) => {
   try {
-    const team = await Teams.get(req.body.teamId);
+    const founder = await Users.get(req.user?._id);
+    if (!founder) throw new ApiError("no user", httpStatus.NOT_FOUND);
+    const team = await Teams.get(founder.teamId);
     if (!team) throw new ApiError("no team", httpStatus.NOT_FOUND);
     if ((req.user?._id).toString() !== team.founder._id.toString())
       throw new ApiError(
@@ -168,23 +174,24 @@ const rejectRequestFromUser = async (req, res, next) => {
 };
 const invitePlayer = async (req, res, next) => {
   try {
-    const team = await Teams.get(req.body?.teamId);
-    if (!team) throw new ApiError("Team does not exist", httpStatus.NOT_FOUND);
-    const invitedUser = await Users.get(req.body?.userId);
-    if (!invitedUser) throw new ApiError("no user", httpStatus.NOT_FOUND);
-
     const user = await Users.get(req.user?._id);
     if (!user) throw new ApiError("no user", httpStatus.NOT_FOUND);
+    const team = await Teams.get(user.teamId);
+    if (!team) throw new ApiError("Team does not exist", httpStatus.NOT_FOUND);
+
     if ((req.user?._id).toString() !== team.founder._id.toString())
       throw new ApiError(
         "you have no acces to do this action.",
         httpStatus.UNAUTHORIZED
       );
 
+    const invitedUser = await Users.get(req.body?.userId);
+    if (!invitedUser) throw new ApiError("no user", httpStatus.NOT_FOUND);
+
     invitedUser.teamRequests.push(team);
     await invitedUser.save();
 
-    res.status(httpStatus.OK).send(team);
+    res.status(httpStatus.OK).send(invitedUser);
   } catch (error) {
     next(error);
   }

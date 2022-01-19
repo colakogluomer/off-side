@@ -36,6 +36,13 @@ const TeamSchema = new mongoose.Schema(
         autopopulate: { maxDepth: 1 },
       },
     ],
+    matchRequests: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "match",
+        autopopulate: { maxDepth: 2 },
+      },
+    ],
   },
   { timestamps: true, versionKey: false }
 );

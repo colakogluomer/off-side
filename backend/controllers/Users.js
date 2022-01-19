@@ -167,7 +167,9 @@ const leaveTeam = async (req, res, next) => {
     console.log(team);
     user.teamId = undefined;
 
-    team.playersId = team.playersId.filter((id) => id.toString() != user._id);
+    team.playersId = team.playersId.filter(
+      (obj) => obj.id.toString() != user._id
+    );
     await user.save();
     await team.save();
     res.status(httpStatus.OK).send(team);
@@ -178,16 +180,10 @@ const leaveTeam = async (req, res, next) => {
 
 const getTeamsRequests = async (req, res, next) => {
   try {
-    const user = Users.get(req.user?._id);
+    console.log(`geldi`);
+    const user = await Users.get(req.user?._id);
     if (!user) throw new ApiError("no user", httpStatus.NOT_FOUND);
-    const team = Teams.get(req.body.teamId);
-    if (!team) throw new ApiError("no team", httpStatus.NOT_FOUND);
-
-    if (user._id.toString() != team.founder.toString())
-      throw new ApiError(
-        "you have no acces to do this action.",
-        httpStatus.UNAUTHORIZED
-      );
+    console.log(`user.teamRequests`, user.teamRequests);
     if (!user.teamRequests)
       res.status(httpStatus.OK).send("there is no request from any team");
     res.status(httpStatus.OK).send(user.teamRequests);
@@ -224,6 +220,8 @@ const rejectRequestFromTeam = async (req, res, next) => {
     const team = await Teams.get(req.body.teamId);
     if (!team) throw new ApiError("no team", httpStatus.NOT_FOUND);
     const user = await Users.get(req.user?._id);
+    console.log(`user`, user);
+
     if (!user) throw new ApiError("no user", httpStatus.NOT_FOUND);
     user.teamRequests = await user.teamRequests.filter(
       (obj) => obj._id.toString() != team._id.toString()
