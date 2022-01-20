@@ -62,7 +62,7 @@ const sendMatchInvitation = async (req, res, next) => {
 
     const user = await Users.get(req.user?._id);
     if (!user) throw new ApiError("no user", httpStatus.NOT_FOUND);
-    const ownTeam = await Teams.get(req.user?.teamId);
+    const ownTeam = await Teams.get(user.teamId);
     if (!ownTeam)
       throw new ApiError("Team does not exist", httpStatus.NOT_FOUND);
     if ((req.user?._id).toString() !== ownTeam.founder._id.toString())
@@ -71,7 +71,7 @@ const sendMatchInvitation = async (req, res, next) => {
         httpStatus.UNAUTHORIZED
       );
 
-    opposingTeam.matchRequests.push(ownTeam);
+    await opposingTeam.matchRequests.push(ownTeam);
     await opposingTeam.save();
 
     res.status(httpStatus.OK).send(opposingTeam);
@@ -146,7 +146,25 @@ const rejectMatchInvitation = async (req, res, next) => {
     next(error);
   }
 };
+const getMatchRequests = async (req, res, next) => {
+  try {
+    const user = await Users.get(req.user?._id);
+    if (!user) throw new ApiError("no user", httpStatus.NOT_FOUND);
+    const team = await Teams.get(user.teamId);
+    if (!team) throw new ApiError("no team", httpStatus.NOT_FOUND);
+    if ((req.user?._id).toString() !== team.founder._id.toString())
+      throw new ApiError(
+        "you have no acces to do this action.",
+        httpStatus.UNAUTHORIZED
+      );
 
+    if (team.matchRequests == [].toString())
+      res.status(httpStatus.OK).send("there is no request from any team");
+    else res.status(httpStatus.OK).send(team.matchRequests);
+  } catch (error) {
+    next(error);
+  }
+};
 module.exports = {
   getAll,
   remove,
@@ -154,4 +172,5 @@ module.exports = {
   sendMatchInvitation,
   acceptMatchInvitation,
   rejectMatchInvitation,
+  getMatchRequests,
 };
