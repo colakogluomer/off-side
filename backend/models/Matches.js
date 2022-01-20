@@ -5,7 +5,7 @@ const MatchSchema = new mongoose.Schema(
       {
         type: mongoose.Types.ObjectId,
         ref: "team",
-        autopopulate: { maxDepth: 2 },
+        autopopulate: false,
       },
     ],
     adress: String,

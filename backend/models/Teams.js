@@ -40,7 +40,7 @@ const TeamSchema = new mongoose.Schema(
       {
         type: mongoose.Types.ObjectId,
         ref: "match",
-        autopopulate: { maxDepth: 2 },
+        autopopulate: { maxDepth: 3 },
       },
     ],
   },
