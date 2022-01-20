@@ -32,7 +32,7 @@ const TeamSchema = new mongoose.Schema(
     matchRequests: [
       {
         type: mongoose.Types.ObjectId,
-        ref: "team", // team olarak degistir
+        ref: "team",
         autopopulate: { maxDepth: 2 },
       },
     ],
