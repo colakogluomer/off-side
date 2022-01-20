@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/models/team/team.dart';
 import 'package:frontend/models/user/user.dart';
+import 'package:frontend/pages/team/search_player_screen.dart';
 import 'package:frontend/services/team_service.dart';
+import 'package:frontend/services/user_service.dart';
 import 'package:frontend/utils/snackbar_service.dart';
 import 'package:frontend/widgets/team_screen.dart';
 import 'package:frontend/widgets/user_card.dart';
@@ -95,6 +97,11 @@ class TeamStackedCard extends StatelessWidget {
                 }
               }),
           const ListTile(title: Text("Players")),
+          SizedBox(
+            height: 300.0,
+            child:
+                UserListBuilder(UserService.getUserListFromIds(team.playerIds)),
+          ),
         ],
       ),
     );

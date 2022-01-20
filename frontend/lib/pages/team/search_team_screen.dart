@@ -4,8 +4,6 @@ import 'package:frontend/services/team_service.dart';
 import 'package:frontend/widgets/team_card.dart';
 
 class SearchTeamScreen extends StatelessWidget {
-  static const routeName = '/creations_library/video_meme_creator';
-
   const SearchTeamScreen({Key? key}) : super(key: key);
 
   @override
@@ -14,15 +12,15 @@ class SearchTeamScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Search team'),
       ),
-      body: TeamListBuilder(futureList: TeamService.list()),
+      body: TeamListBuilder(TeamService.list()),
     );
   }
 }
 
 class TeamListBuilder extends StatelessWidget {
-  const TeamListBuilder({
+  const TeamListBuilder(
+    this.futureList, {
     Key? key,
-    required this.futureList,
   }) : super(key: key);
 
   final Future<List<Team>?> futureList;
