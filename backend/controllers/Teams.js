@@ -22,6 +22,17 @@ const getAll = async (req, res, next) => {
     next(error);
   }
 };
+
+const getTeam = async (req, res, next) => {
+  try {
+    const team = await Teams.get(req.params?.id);
+    if (!team) throw new ApiError("no team", httpStatus.NOT_FOUND);
+    res.status(httpStatus.OK).send(team);
+  } catch (error) {
+    next(error);
+  }
+};
+
 const create = async (req, res, next) => {
   try {
     if (req.user.teamId)
@@ -200,6 +211,7 @@ const invitePlayer = async (req, res, next) => {
 module.exports = {
   getOne,
   getAll,
+  getTeam,
   create,
   update,
   remove,

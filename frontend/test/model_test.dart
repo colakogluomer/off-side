@@ -13,121 +13,92 @@ import 'package:frontend/models/user/user.dart';
 void main() {
   test('Deserialize user with team', () async {
     final u = User.fromJson({
-      "_id": "61e6f2e895fbe5eefa3e3f35",
-      "name": "seher1",
-      "password":
-          "29fc2c32ce9ad661fdd5fae179fe138f2d8d4f1ad3cc05d8333ef117ae6d6084",
-      "email": "seher1@hotmail.com",
       "teamRequests": [],
-      "createdAt": "2022-01-18T17:03:36.841Z",
-      "updatedAt": "2022-01-18T17:04:04.975Z",
+      "_id": "61b4cff4a3b665dec3b8bb6f",
+      "name": "omer3434",
+      "password":
+          "bdbcbc97008bba7bb43115696cb2699baf2ff38998230f2b84cb84915a428fc2",
+      "email": "omercolakoglu52@gmail.com",
+      "createdAt": "2021-12-11T16:21:08.204Z",
+      "updatedAt": "2021-12-14T20:04:12.329Z",
       "teamId": {
-        "_id": "61e6f30495fbe5eefa3e3f39",
-        "name": "seherin2",
-        "playersId": [
-          {
-            "_id": "61e6f2e895fbe5eefa3e3f35",
-            "name": "seher1",
-            "password":
-                "29fc2c32ce9ad661fdd5fae179fe138f2d8d4f1ad3cc05d8333ef117ae6d6084",
-            "email": "seher1@hotmail.com",
-            "teamRequests": [],
-            "createdAt": "2022-01-18T17:03:36.841Z",
-            "updatedAt": "2022-01-18T17:04:04.975Z",
-            "teamId": "61e6f30495fbe5eefa3e3f39"
-          },
-          {
-            "_id": "61e6f1e695fbe5eefa3e3f24",
-            "name": "seher2",
-            "password":
-                "29fc2c32ce9ad661fdd5fae179fe138f2d8d4f1ad3cc05d8333ef117ae6d6084",
-            "email": "seher2@hotmail.com",
-            "teamRequests": [],
-            "createdAt": "2022-01-18T16:59:18.388Z",
-            "updatedAt": "2022-01-18T17:05:55.093Z",
-            "teamId": "61e6f30495fbe5eefa3e3f39"
-          }
-        ],
-        "founder": {
-          "_id": "61e6f2e895fbe5eefa3e3f35",
-          "name": "seher1",
-          "password":
-              "29fc2c32ce9ad661fdd5fae179fe138f2d8d4f1ad3cc05d8333ef117ae6d6084",
-          "email": "seher1@hotmail.com",
-          "teamRequests": [],
-          "createdAt": "2022-01-18T17:03:36.841Z",
-          "updatedAt": "2022-01-18T17:04:04.975Z",
-          "teamId": "61e6f30495fbe5eefa3e3f39"
-        },
         "matches": [],
         "userRequests": [],
         "matchRequests": [],
-        "createdAt": "2022-01-18T17:04:04.722Z",
-        "updatedAt": "2022-01-18T17:05:55.337Z"
+        "_id": "61b4f968d4a853fa5546dbb7",
+        "name": "selamlar1",
+        "playersId": ["61b4cff4a3b665dec3b8bb6f"],
+        "founder": "61b4cff4a3b665dec3b8bb6f",
+        "createdAt": "2021-12-11T19:18:00.733Z",
+        "updatedAt": "2021-12-11T19:18:00.733Z"
       }
     });
 
-    expect(u.teamId?.playerIds[1].name, "seher2");
+    expect(u.team?.playerIds[0], "61b4cff4a3b665dec3b8bb6f");
   });
 
   test('Deserialize team', () async {
     final t = Team.fromJson(
       {
+        "_id": "61e859b80905d7e5bfa7e58e",
+        "name": "onurun",
+        "playersId": ["61e859310905d7e5bfa7e55b"],
+        "founder": "61e859310905d7e5bfa7e55b",
+        "matches": [],
         "userRequests": [],
         "matchRequests": [],
-        "_id": "61defa39ac926ade7f74fdf9",
-        "name": "musti1",
-        "playersId": [
-          {
-            "teamRequests": [],
-            "_id": "61ddf5d87ca4f079fb9bc468",
-            "name": "mustafa2",
-            "password":
-                "3ad2ddb2dbf10d159522deeb2b2240d187217b0b46f2b55ba486c61b009fcc55",
-            "email": "mustafa123@hotmail.com",
-            "createdAt": "2022-01-11T21:25:44.925Z",
-            "updatedAt": "2022-01-14T16:23:01.290Z"
-          }
-        ],
-        "founder": {
-          "teamRequests": [],
-          "_id": "61ddf5d87ca4f079fb9bc468",
-          "name": "mustafa2",
-          "password":
-              "3ad2ddb2dbf10d159522deeb2b2240d187217b0b46f2b55ba486c61b009fcc55",
-          "email": "mustafa123@hotmail.com",
-          "createdAt": "2022-01-11T21:25:44.925Z",
-          "updatedAt": "2022-01-14T16:23:01.290Z"
-        },
-        "createdAt": "2022-01-12T15:56:41.477Z",
-        "updatedAt": "2022-01-13T10:48:16.899Z",
-        "matches": [
-          {
-            "_id": "61e00370691ecc58ee7177ec",
-            "teamsId": ["61defa39ac926ade7f74fdf9", "61defabfac5a8929b773e0f8"],
-            "adress": "Lodz",
-            "createdAt": "2022-01-13T10:48:16.664Z",
-            "updatedAt": "2022-01-13T10:48:16.664Z",
-            "date": "2022-01-18T11:18:56.424Z",
-          }
-        ]
+        "createdAt": "2022-01-19T18:34:32.019Z",
+        "updatedAt": "2022-01-19T18:34:32.136Z"
       },
     );
 
-    expect(t.playerIds[0].name, "mustafa2");
-    expect(t.founder.name, "mustafa2");
+    expect(t.playerIds[0], "61e859310905d7e5bfa7e55b");
+    expect(t.founderId, "61e859310905d7e5bfa7e55b");
   });
 
   test('Deserialize match', () async {
     final m = MatchDto.fromJson({
       "_id": "61e1a9efd1d2b97af500961e",
-      "teamsId": ["61e009f07348d78a4cae2d25", "61defa280317404cdaa0d202"],
+      "teamsId": [
+        {
+          "userRequests": [],
+          "matchRequests": [],
+          "_id": "61e009f07348d78a4cae2d25",
+          "name": "mistikteam",
+          "playersId": ["61e008ae7348d78a4cae2d1d"],
+          "founder": "61e008ae7348d78a4cae2d1d",
+          "matches": [
+            "61e00aa07348d78a4cae2d33",
+            "61e1a93bd1d2b97af5009610",
+            "61e1a9d5d1d2b97af5009617",
+            "61e1a9efd1d2b97af500961e"
+          ],
+          "createdAt": "2022-01-13T11:16:00.982Z",
+          "updatedAt": "2022-01-14T16:50:55.764Z"
+        },
+        {
+          "userRequests": [],
+          "matchRequests": [],
+          "_id": "61defa280317404cdaa0d202",
+          "name": "musti1",
+          "playersId": ["61ddf5d87ca4f079fb9bc468"],
+          "founder": "61ddf5d87ca4f079fb9bc468",
+          "createdAt": "2022-01-12T15:56:24.928Z",
+          "updatedAt": "2022-01-14T16:50:55.845Z",
+          "matches": [
+            "61e00aa07348d78a4cae2d33",
+            "61e1a93bd1d2b97af5009610",
+            "61e1a9d5d1d2b97af5009617",
+            "61e1a9efd1d2b97af500961e"
+          ]
+        }
+      ],
       "adress": "Mickewicza",
       "date": "2022-01-18T20:00:00.000Z",
       "createdAt": "2022-01-14T16:50:55.530Z",
       "updatedAt": "2022-01-14T16:50:55.530Z"
     });
 
-    expect(m.teamIds[1], "61defa280317404cdaa0d202");
+    expect(m.teams[1].name, "musti1");
   });
 }

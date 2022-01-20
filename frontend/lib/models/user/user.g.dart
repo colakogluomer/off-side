@@ -7,14 +7,14 @@ part of 'user.dart';
 // **************************************************************************
 
 User _$UserFromJson(Map<String, dynamic> json) => User(
-      id: json['_id'] as String?,
-      email: json['email'] as String?,
+      id: json['_id'] as String,
+      email: json['email'] as String,
       name: json['name'] as String,
       teamRequests: (json['teamRequests'] as List<dynamic>)
           .map((e) => Team.fromJson(e as Map<String, dynamic>))
           .toList(),
       profileImage: json['profileImage'] as String?,
-      teamId: (json['teamId'] == null || json['teamId'] is String)
+      team: json['teamId'] == null
           ? null
           : Team.fromJson(json['teamId'] as Map<String, dynamic>),
       createdAt: json['createdAt'] == null
@@ -30,7 +30,7 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'email': instance.email,
       'name': instance.name,
       'profileImage': instance.profileImage,
-      'teamId': instance.teamId,
+      'teamId': instance.team,
       'teamRequests': instance.teamRequests,
       'createdAt': instance.createdAt?.toIso8601String(),
       'updatedAt': instance.updatedAt?.toIso8601String(),

@@ -7,20 +7,18 @@ part of 'team.dart';
 // **************************************************************************
 
 Team _$TeamFromJson(Map<String, dynamic> json) => Team(
-      id: json['_id'] as String?,
+      id: json['_id'] as String,
       name: json['name'] as String,
-      playerIds: (json['playersId'] as List<dynamic>)
-          .map((e) => User.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      founder: User.fromJson(json['founder'] as Map<String, dynamic>),
-      matches: (json['matches'] as List<dynamic>)
-          .map((e) => MatchDto.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      playerIds:
+          (json['playersId'] as List<dynamic>).map((e) => e as String).toList(),
+      founderId: json['founder'] as String,
+      matches:
+          (json['matches'] as List<dynamic>).map((e) => e as String).toList(),
       matchRequests: (json['matchRequests'] as List<dynamic>)
-          .map((e) => MatchDto.fromJson(e as Map<String, dynamic>))
+          .map((e) => e as String)
           .toList(),
       userRequests: (json['userRequests'] as List<dynamic>)
-          .map((e) => User.fromJson(e as Map<String, dynamic>))
+          .map((e) => e as String)
           .toList(),
       createdAt: json['createdAt'] == null
           ? null
@@ -37,7 +35,7 @@ Map<String, dynamic> _$TeamToJson(Team instance) => <String, dynamic>{
       'matchRequests': instance.matchRequests,
       'userRequests': instance.userRequests,
       'matches': instance.matches,
-      'founder': instance.founder,
+      'founder': instance.founderId,
       'createdAt': instance.createdAt?.toIso8601String(),
       'updatedAt': instance.updatedAt?.toIso8601String(),
     };

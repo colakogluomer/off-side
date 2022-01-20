@@ -8,7 +8,7 @@ const UserSchema = new mongoose.Schema(
     teamId: {
       type: mongoose.Types.ObjectId,
       ref: "team",
-      autopopulate: { maxDepth: 2 },
+      autopopulate: { maxDepth: 1 },
     },
     position: String,
     level: String,
@@ -16,7 +16,7 @@ const UserSchema = new mongoose.Schema(
       {
         type: mongoose.Types.ObjectId,
         ref: "team",
-        autopopulate: { maxDepth: 2 },
+        autopopulate: false,
       },
     ],
   },

@@ -7,33 +7,33 @@ const TeamSchema = new mongoose.Schema(
       {
         type: mongoose.Types.ObjectId,
         ref: "user",
-        autopopulate: { maxDepth: 1 },
+        autopopulate: false,
       },
     ],
     founder: {
       type: mongoose.Types.ObjectId,
       ref: "user",
-      autopopulate: { maxDepth: 1 },
+      autopopulate: false,
     },
     matches: [
       {
         type: mongoose.Types.ObjectId,
         ref: "match",
-        autopopulate: { maxDepth: 2 },
+        autopopulate: false,
       },
     ],
     userRequests: [
       {
         type: mongoose.Types.ObjectId,
         ref: "user",
-        autopopulate: { maxDepth: 2 },
+        autopopulate: false,
       },
     ],
     matchRequests: [
       {
         type: mongoose.Types.ObjectId,
         ref: "team",
-        autopopulate: { maxDepth: 2 },
+        autopopulate: false,
       },
     ],
   },
