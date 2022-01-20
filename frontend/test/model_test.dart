@@ -11,74 +11,123 @@ import 'package:frontend/models/team/team.dart';
 import 'package:frontend/models/user/user.dart';
 
 void main() {
-  test('Deserialize user', () async {
+  test('Deserialize user with team', () async {
     final u = User.fromJson({
-      "_id": "61a584f45dae7dcd664dd5dc",
-      "name": "qwasdasdasd",
+      "_id": "61e6f2e895fbe5eefa3e3f35",
+      "name": "seher1",
       "password":
-          "a19acdd61933930b9fb30fc1b2cbd95a01a983c1c6b7dca9fe85a0be5b09ff3a",
-      "email": "omer123@gmail.com",
-      "createdAt": "2021-11-30T01:57:08.291Z",
-      "updatedAt": "2021-11-30T01:57:08.291Z"
+          "29fc2c32ce9ad661fdd5fae179fe138f2d8d4f1ad3cc05d8333ef117ae6d6084",
+      "email": "seher1@hotmail.com",
+      "teamRequests": [],
+      "createdAt": "2022-01-18T17:03:36.841Z",
+      "updatedAt": "2022-01-18T17:04:04.975Z",
+      "teamId": {
+        "_id": "61e6f30495fbe5eefa3e3f39",
+        "name": "seherin2",
+        "playersId": [
+          {
+            "_id": "61e6f2e895fbe5eefa3e3f35",
+            "name": "seher1",
+            "password":
+                "29fc2c32ce9ad661fdd5fae179fe138f2d8d4f1ad3cc05d8333ef117ae6d6084",
+            "email": "seher1@hotmail.com",
+            "teamRequests": [],
+            "createdAt": "2022-01-18T17:03:36.841Z",
+            "updatedAt": "2022-01-18T17:04:04.975Z",
+            "teamId": "61e6f30495fbe5eefa3e3f39"
+          },
+          {
+            "_id": "61e6f1e695fbe5eefa3e3f24",
+            "name": "seher2",
+            "password":
+                "29fc2c32ce9ad661fdd5fae179fe138f2d8d4f1ad3cc05d8333ef117ae6d6084",
+            "email": "seher2@hotmail.com",
+            "teamRequests": [],
+            "createdAt": "2022-01-18T16:59:18.388Z",
+            "updatedAt": "2022-01-18T17:05:55.093Z",
+            "teamId": "61e6f30495fbe5eefa3e3f39"
+          }
+        ],
+        "founder": {
+          "_id": "61e6f2e895fbe5eefa3e3f35",
+          "name": "seher1",
+          "password":
+              "29fc2c32ce9ad661fdd5fae179fe138f2d8d4f1ad3cc05d8333ef117ae6d6084",
+          "email": "seher1@hotmail.com",
+          "teamRequests": [],
+          "createdAt": "2022-01-18T17:03:36.841Z",
+          "updatedAt": "2022-01-18T17:04:04.975Z",
+          "teamId": "61e6f30495fbe5eefa3e3f39"
+        },
+        "matches": [],
+        "userRequests": [],
+        "matchRequests": [],
+        "createdAt": "2022-01-18T17:04:04.722Z",
+        "updatedAt": "2022-01-18T17:05:55.337Z"
+      }
     });
 
-    expect(u.name, "qwasdasdasd");
-    expect(u.id, "61a584f45dae7dcd664dd5dc");
-    expect(u.email, "omer123@gmail.com");
-    expect(u.createdAt?.day, 30);
+    expect(u.teamId?.playerIds[1].name, "seher2");
   });
 
-  test('Deserialize user with team', () async {
-    final u = User.fromJson(
-      {
-        "_id": "61d9cfd6467935d08fbe2fd2",
-        "name": "Daniel",
-        "password":
-            "d4c2aa342ba7fe97c0a49c248e4e85d3769481d6885d0a493b4e139fa2849386",
-        "email": "daniel@email.com",
-        "createdAt": "2022-01-08T17:54:30.941Z",
-        "updatedAt": "2022-01-15T20:13:07.976Z",
-        "teamId": "61a591e1dd9d6d3a2703ff8f"
-      },
-    );
-
-    expect(u.teamId, "61a591e1dd9d6d3a2703ff8f");
-  });
-
-  test('Deserialize user with team', () async {
+  test('Deserialize team', () async {
     final t = Team.fromJson(
       {
-        "_id": "61b4d045a3b665dec3b8bb72",
-        "name": "hellotry",
-        "playersId": [],
-        "founder": {"_id": "61b4cff4a3b665dec3b8bb6f", "name": "omer3434"},
-        "createdAt": "2021-12-11T16:22:29.573Z",
-        "updatedAt": "2021-12-11T16:22:29.573Z"
+        "userRequests": [],
+        "matchRequests": [],
+        "_id": "61defa39ac926ade7f74fdf9",
+        "name": "musti1",
+        "playersId": [
+          {
+            "teamRequests": [],
+            "_id": "61ddf5d87ca4f079fb9bc468",
+            "name": "mustafa2",
+            "password":
+                "3ad2ddb2dbf10d159522deeb2b2240d187217b0b46f2b55ba486c61b009fcc55",
+            "email": "mustafa123@hotmail.com",
+            "createdAt": "2022-01-11T21:25:44.925Z",
+            "updatedAt": "2022-01-14T16:23:01.290Z"
+          }
+        ],
+        "founder": {
+          "teamRequests": [],
+          "_id": "61ddf5d87ca4f079fb9bc468",
+          "name": "mustafa2",
+          "password":
+              "3ad2ddb2dbf10d159522deeb2b2240d187217b0b46f2b55ba486c61b009fcc55",
+          "email": "mustafa123@hotmail.com",
+          "createdAt": "2022-01-11T21:25:44.925Z",
+          "updatedAt": "2022-01-14T16:23:01.290Z"
+        },
+        "createdAt": "2022-01-12T15:56:41.477Z",
+        "updatedAt": "2022-01-13T10:48:16.899Z",
+        "matches": [
+          {
+            "_id": "61e00370691ecc58ee7177ec",
+            "teamsId": ["61defa39ac926ade7f74fdf9", "61defabfac5a8929b773e0f8"],
+            "adress": "Lodz",
+            "createdAt": "2022-01-13T10:48:16.664Z",
+            "updatedAt": "2022-01-13T10:48:16.664Z",
+            "date": "2022-01-18T11:18:56.424Z",
+          }
+        ]
       },
     );
 
-    expect(t.playerIds, []);
-    expect(t.id, "61b4d045a3b665dec3b8bb72");
-    expect(t.name, "hellotry");
-    expect(t.createdAt?.day, 11);
-    expect(t.founder?.name, "omer3434");
+    expect(t.playerIds[0].name, "mustafa2");
+    expect(t.founder.name, "mustafa2");
   });
 
   test('Deserialize match', () async {
-    final m = MatchDto.fromJson(
-      {
-        "_id": "61dee2fe6fd0301c717f1d8c",
-        "teamsId": ["61ddfbefd17ef039dfe8b7fc", "61daeb010d81a001a600b621"],
-        "adress": "sasdas",
-        "date": "2022-01-18T20:00:00.000Z",
-        "createdAt": "2022-01-12T14:17:34.600Z",
-        "updatedAt": "2022-01-12T14:17:34.600Z"
-      },
-    );
+    final m = MatchDto.fromJson({
+      "_id": "61e1a9efd1d2b97af500961e",
+      "teamsId": ["61e009f07348d78a4cae2d25", "61defa280317404cdaa0d202"],
+      "adress": "Mickewicza",
+      "date": "2022-01-18T20:00:00.000Z",
+      "createdAt": "2022-01-14T16:50:55.530Z",
+      "updatedAt": "2022-01-14T16:50:55.530Z"
+    });
 
-    expect(m.teamIds[1], "61daeb010d81a001a600b621");
-    expect(m.address, "sasdas");
-    expect(m.createdAt?.day, 12);
-    expect(m.date.day, 18);
+    expect(m.teamIds[1], "61defa280317404cdaa0d202");
   });
 }

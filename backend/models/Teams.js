@@ -19,21 +19,28 @@ const TeamSchema = new mongoose.Schema(
       {
         type: mongoose.Types.ObjectId,
         ref: "match",
-        autopopulate: { maxDepth: 2 },
+        autopopulate: { maxDepth: 1 },
       },
     ],
     userRequests: [
       {
         type: mongoose.Types.ObjectId,
         ref: "user",
-        autopopulate: { maxDepth: 2 },
+        autopopulate: { maxDepth: 1 },
       },
     ],
     matchRequests: [
       {
         type: mongoose.Types.ObjectId,
         ref: "match",
-        autopopulate: { maxDepth: 2 },
+        autopopulate: { maxDepth: 1 },
+      },
+    ],
+    matchRequests: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "match",
+        autopopulate: { maxDepth: 3 },
       },
     ],
   },

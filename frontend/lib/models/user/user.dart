@@ -1,3 +1,4 @@
+import 'package:frontend/models/team/team.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'user.g.dart';
@@ -9,7 +10,8 @@ class User {
   String? email;
   String name;
   String? profileImage;
-  String? teamId;
+  Team? teamId;
+  List<Team> teamRequests;
   DateTime? createdAt;
   DateTime? updatedAt;
 
@@ -17,6 +19,7 @@ class User {
     this.id,
     required this.email,
     required this.name,
+    required this.teamRequests,
     this.profileImage,
     this.teamId,
     this.createdAt,
