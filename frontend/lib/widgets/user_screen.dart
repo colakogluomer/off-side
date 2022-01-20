@@ -3,8 +3,6 @@ import 'package:frontend/models/user/user.dart';
 import 'package:frontend/widgets/user_card.dart';
 
 class UserProfileScreen extends StatelessWidget {
-  static const routeName = '/creations_library/video_meme_creator';
-
   final User user;
 
   const UserProfileScreen({Key? key, required this.user}) : super(key: key);
@@ -24,11 +22,11 @@ class UserProfileScreen extends StatelessWidget {
               alignment: MainAxisAlignment.end,
               children: [
                 ElevatedButton(
-                  onPressed: () => {},
+                  onPressed: null,
                   child: const Text("Contact"),
                 ),
                 ElevatedButton(
-                  onPressed: () => {},
+                  onPressed: null,
                   child: const Text("Invite"),
                 ),
               ],

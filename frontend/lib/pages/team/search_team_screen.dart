@@ -22,7 +22,7 @@ class SearchTeamScreen extends StatelessWidget {
           if (snapshot.hasData && teams != null) {
             child = ListView.builder(
               itemCount: teams.length,
-              itemBuilder: (_, i) => TeamCard(team: teams[i]),
+              itemBuilder: (_, i) => TeamHorizontalCard(team: teams[i]),
             );
           } else if (snapshot.connectionState == ConnectionState.done) {
             child = const Icon(
