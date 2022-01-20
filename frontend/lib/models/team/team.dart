@@ -1,5 +1,3 @@
-import 'package:frontend/models/match/match.dart';
-import 'package:frontend/models/user/user.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'team.g.dart';
@@ -7,22 +5,23 @@ part 'team.g.dart';
 @JsonSerializable()
 class Team {
   @JsonKey(name: '_id')
-  String? id;
+  String id;
   String name;
   @JsonKey(name: 'playersId')
-  List<User> playerIds;
-  List<MatchDto> matchRequests;
-  List<User> userRequests;
-  List<MatchDto> matches;
-  User founder;
+  List<String> playerIds;
+  List<String> matchRequests;
+  List<String> userRequests;
+  List<String> matches;
+  @JsonKey(name: 'founder')
+  String founderId;
   DateTime? createdAt;
   DateTime? updatedAt;
 
   Team({
-    this.id,
+    required this.id,
     required this.name,
     required this.playerIds,
-    required this.founder,
+    required this.founderId,
     required this.matches,
     required this.matchRequests,
     required this.userRequests,
