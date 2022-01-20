@@ -1,3 +1,5 @@
+import 'package:frontend/models/user/user.dart';
+import 'package:frontend/services/user_service.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'team.g.dart';
@@ -35,5 +37,13 @@ class Team {
   @override
   String toString() {
     return toJson().toString();
+  }
+
+  Future<User> getFounder() async {
+    final u = await UserService.getById(founderId);
+    if (u == null) {
+      throw NullThrownError();
+    }
+    return u;
   }
 }

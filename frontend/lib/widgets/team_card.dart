@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/models/team/team.dart';
+import 'package:frontend/models/user/user.dart';
 import 'package:frontend/services/team_service.dart';
 import 'package:frontend/utils/snackbar_service.dart';
 import 'package:frontend/widgets/team_screen.dart';
@@ -32,11 +33,11 @@ class TeamHorizontalCard extends StatelessWidget {
             ListTile(
               leading: const Icon(Icons.people),
               title: Text(team.name),
-              subtitle: Text(team.founder.name),
+              subtitle: Text("${team.playerIds.length} players"),
               trailing: TextButton(
                 child: const Text("Join"),
                 onPressed: () async {
-                  String? message = await TeamService.join(team.id ?? "");
+                  String? message = await TeamService.join(team.id);
                   message ??= "You joined the team: ${team.name}";
                   showSnackBar(context, message);
                 },
@@ -68,16 +69,32 @@ class TeamStackedCard extends StatelessWidget {
           const ListTile(
             title: Text("Founder"),
           ),
-          UserHorizontalCard(user: team.founder),
-          ListTile(title: Text("Players")),
-          SizedBox(
-            height: 300.0,
-            child: ListView.builder(
-              itemCount: team.playerIds.length,
-              itemBuilder: (_, i) =>
-                  UserHorizontalCard(user: team.playerIds[i]),
-            ),
-          ),
+          FutureBuilder<User>(
+              future: team
+                  .getFounder(), // a previously-obtained Future<String> or null
+              builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
+                if (snapshot.hasData && snapshot.data != null) {
+                  final user = snapshot.data;
+                  return user != null
+                      ? UserHorizontalCard(user: user)
+                      : Container();
+                } else if (snapshot.hasError) {
+                  return const Center(
+                    child: Icon(
+                      Icons.error_outline,
+                      color: Colors.red,
+                      size: 40,
+                    ),
+                  );
+                } else {
+                  return const SizedBox(
+                    width: 40,
+                    height: 40,
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              }),
+          const ListTile(title: Text("Players")),
         ],
       ),
     );

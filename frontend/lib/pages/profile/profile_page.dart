@@ -59,7 +59,7 @@ class _ProfilePageBodyState extends State<ProfilePageBody> {
                           });
                         },
                         child: const Text("Logout")),
-                    user?.teamId != null
+                    user?.team != null
                         ? ElevatedButton(
                             onPressed: () async {
                               String? message = await UserService.leaveTeam();

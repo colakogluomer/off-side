@@ -34,7 +34,7 @@ class UserHorizontalCard extends StatelessWidget {
                     )
                   : const Icon(Icons.person),
               title: Text(user.name),
-              subtitle: Text(user.email ?? ""),
+              subtitle: Text(user.email),
             ),
           ],
         ),
@@ -81,8 +81,8 @@ class UserStackedCard extends StatelessWidget {
               ],
             ),
           ),
-          if (user.teamId != null)
-            TeamHorizontalCard(team: user.teamId!)
+          if (user.team != null)
+            TeamHorizontalCard(team: user.team!)
           else
             Text("no team"),
         ],

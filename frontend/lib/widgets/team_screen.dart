@@ -23,13 +23,13 @@ class TeamScreen extends StatelessWidget {
             ButtonBar(
               alignment: MainAxisAlignment.end,
               children: [
-                ElevatedButton(
+                const ElevatedButton(
                   onPressed: null,
-                  child: const Text("Challenge"),
+                  child: Text("Challenge"),
                 ),
                 ElevatedButton(
                   onPressed: () async {
-                    String? message = await TeamService.join(team.id ?? "");
+                    String? message = await TeamService.join(team.id);
                     message ??= "You joined the team: ${team.name}";
                     showSnackBar(context, message);
                   },

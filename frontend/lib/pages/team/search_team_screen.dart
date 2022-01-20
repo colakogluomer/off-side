@@ -14,28 +14,42 @@ class SearchTeamScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Search team'),
       ),
-      body: FutureBuilder<List<Team>?>(
-        future: TeamService.list(),
-        builder: (BuildContext context, AsyncSnapshot<List<Team>?> snapshot) {
-          Widget child;
-          List<Team>? teams = snapshot.data;
-          if (snapshot.hasData && teams != null) {
-            child = ListView.builder(
-              itemCount: teams.length,
-              itemBuilder: (_, i) => TeamHorizontalCard(team: teams[i]),
-            );
-          } else if (snapshot.connectionState == ConnectionState.done) {
-            child = const Icon(
-              Icons.error_outline,
-              color: Colors.red,
-              size: 60,
-            );
-          } else {
-            child = const Center(child: CircularProgressIndicator());
-          }
-          return child;
-        },
-      ),
+      body: TeamListBuilder(futureList: TeamService.list()),
+    );
+  }
+}
+
+class TeamListBuilder extends StatelessWidget {
+  const TeamListBuilder({
+    Key? key,
+    required this.futureList,
+  }) : super(key: key);
+
+  final Future<List<Team>?> futureList;
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<List<Team>?>(
+      future: futureList,
+      builder: (BuildContext context, AsyncSnapshot<List<Team>?> snapshot) {
+        Widget child;
+        List<Team>? teams = snapshot.data;
+        if (snapshot.hasData && teams != null) {
+          child = ListView.builder(
+            itemCount: teams.length,
+            itemBuilder: (_, i) => TeamHorizontalCard(team: teams[i]),
+          );
+        } else if (snapshot.connectionState == ConnectionState.done) {
+          child = const Icon(
+            Icons.error_outline,
+            color: Colors.red,
+            size: 60,
+          );
+        } else {
+          child = const Center(child: CircularProgressIndicator());
+        }
+        return child;
+      },
     );
   }
 }
