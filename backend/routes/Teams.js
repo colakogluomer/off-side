@@ -8,6 +8,7 @@ const {
   create,
   update,
   getOne,
+  getTeam,
   remove,
   join,
   getUsersApplications,
@@ -18,6 +19,7 @@ const {
 
 router.route("/").get(authenticate, getAll);
 router.route("/search").get(authenticate, getOne);
+router.route("/:id").get(authenticate, getTeam);
 router
   .route("/")
   .post(authenticate, validate(schemas.createValidation), create);
