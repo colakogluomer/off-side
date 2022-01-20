@@ -12,6 +12,7 @@ const {
   sendMatchInvitation,
   acceptMatchInvitation,
   rejectMatchInvitation,
+  getMatchRequests,
 } = require("../controllers/Matches");
 
 router.route("/").get(authenticate, getAll);
@@ -24,5 +25,5 @@ router
 router
   .route("/reject-match-invitation")
   .post(authenticate, rejectMatchInvitation);
-
+router.route("/get-match-requests").get(authenticate, getMatchRequests);
 module.exports = router;
