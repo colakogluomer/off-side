@@ -16,7 +16,7 @@ const UserSchema = new mongoose.Schema(
       {
         type: mongoose.Types.ObjectId,
         ref: "team",
-        autopopulate: false,
+        autopopulate: { maxDepth: 1 },
       },
     ],
   },
