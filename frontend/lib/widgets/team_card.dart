@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/models/team/team.dart';
 import 'package:frontend/models/user/user.dart';
 import 'package:frontend/pages/team/search_player_screen.dart';
-import 'package:frontend/services/team_service.dart';
 import 'package:frontend/services/user_service.dart';
-import 'package:frontend/utils/snackbar_service.dart';
 import 'package:frontend/widgets/team_screen.dart';
 import 'package:frontend/widgets/user_card.dart';
 
@@ -36,14 +34,6 @@ class TeamHorizontalCard extends StatelessWidget {
               leading: const Icon(Icons.people),
               title: Text(team.name),
               subtitle: Text("${team.playerIds.length} players"),
-              trailing: TextButton(
-                child: const Text("Join"),
-                onPressed: () async {
-                  String? message = await TeamService.join(team.id);
-                  message ??= "You joined the team: ${team.name}";
-                  showSnackBar(context, message);
-                },
-              ),
             ),
           ],
         ),
