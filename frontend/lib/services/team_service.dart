@@ -21,23 +21,23 @@ class TeamService {
     return retrievedTeam;
   }
 
-  static Future<Team?> create(Team team) async {
-    Team? retrievedTeam;
-
+  static Future<String> create(String name) async {
+    String message;
     try {
+      debugPrint('start sending request');
       Response response = await Api().dio.post(
-            '/teams',
-            data: team.toJson(),
-          );
+        '/teams',
+        data: {"name": name},
+      );
+
+      message = "Team created";
 
       debugPrint('Team created: ${response.data}');
-
-      retrievedTeam = Team.fromJson(response.data);
-    } catch (e) {
-      return null;
+    } on DioError catch (err, stack) {
+      debugPrint("error: $stack");
+      message = err.response?.data;
     }
-
-    return retrievedTeam;
+    return message;
   }
 
   static Future<List<Team>?> list() async {
