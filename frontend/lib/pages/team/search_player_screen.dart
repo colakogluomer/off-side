@@ -12,18 +12,22 @@ class SearchUserScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Search user'),
       ),
-      body: UserListBuilder(UserService.list()),
+      body: UserListViewBuilder(UserService.list()),
     );
   }
 }
 
-class UserListBuilder extends StatelessWidget {
-  const UserListBuilder(
+class UserListViewBuilder extends StatelessWidget {
+  const UserListViewBuilder(
     this.futureList, {
+    this.onTap,
+    this.physics,
     Key? key,
   }) : super(key: key);
 
   final Future<List<User>?> futureList;
+  final GestureTapCallback? onTap;
+  final ScrollPhysics? physics;
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +38,13 @@ class UserListBuilder extends StatelessWidget {
         List<User>? users = snapshot.data;
         if (snapshot.hasData && users != null) {
           child = ListView.builder(
+            physics: physics,
+            shrinkWrap: true,
             itemCount: users.length,
-            itemBuilder: (_, i) => UserHorizontalCard(user: users[i]),
+            itemBuilder: (_, i) => UserHorizontalCard(
+              user: users[i],
+              onTap: onTap,
+            ),
           );
         } else if (snapshot.connectionState == ConnectionState.done) {
           child = const Icon(

@@ -12,18 +12,20 @@ class SearchTeamScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Search team'),
       ),
-      body: TeamListBuilder(TeamService.list()),
+      body: TeamListViewBuilder(TeamService.list()),
     );
   }
 }
 
-class TeamListBuilder extends StatelessWidget {
-  const TeamListBuilder(
+class TeamListViewBuilder extends StatelessWidget {
+  const TeamListViewBuilder(
     this.futureList, {
+    this.onTap,
     Key? key,
   }) : super(key: key);
 
   final Future<List<Team>?> futureList;
+  final GestureTapCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
