@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/models/team/team.dart';
 import 'package:frontend/pages/team/search_player_screen.dart';
 import 'package:frontend/pages/team/search_team_screen.dart';
+import 'package:frontend/provider/user_change_notifier.dart';
 import 'package:frontend/services/team_service.dart';
 import 'package:frontend/services/user_service.dart';
 import 'package:frontend/widgets/team_card.dart';
+import 'package:provider/src/provider.dart';
 
 class TeamPage extends StatelessWidget {
   const TeamPage({Key? key}) : super(key: key);
@@ -25,25 +26,8 @@ class TeamPage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          FutureBuilder<Team?>(
-            future: UserService.team(),
-            builder: (BuildContext context, AsyncSnapshot<Team?> snapshot) {
-              Widget child;
-              Team? userTeam = snapshot.data;
-              debugPrint(snapshot.hasData.toString());
-              if (snapshot.hasData && userTeam != null) {
-                child = Column(
-                  children: [
-                    const Text("Your Team"),
-                    TeamHorizontalCard(team: userTeam),
-                  ],
-                );
-              } else {
-                child = Container();
-              }
-              return child;
-            },
-          ),
+          if (context.watch<CurrentUser>().user?.team != null)
+            TeamHorizontalCard(team: context.watch<CurrentUser>().user!.team!),
           ElevatedButton(
             onPressed: () {
               Navigator.push(

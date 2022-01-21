@@ -30,7 +30,7 @@ class TeamScreen extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () async {
                     String? message = await TeamService.join(team.id);
-                    message ??= "You joined the team: ${team.name}";
+                    message ??= "You send request to ${team.name}";
                     showSnackBar(context, message);
                   },
                   child: const Text("Join"),
