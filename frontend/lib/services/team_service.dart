@@ -40,6 +40,44 @@ class TeamService {
     return message;
   }
 
+  static Future<String> acceptPlayer(String userId) async {
+    String message;
+    try {
+      debugPrint('start sending request');
+      Response response = await Api().dio.post(
+        '/teams/accept-player',
+        data: {"userId": userId},
+      );
+
+      message = "Player accepted";
+
+      debugPrint('acceptPlayer: ${response.data}');
+    } on DioError catch (err, stack) {
+      debugPrint("error: $stack");
+      message = err.response?.data;
+    }
+    return message;
+  }
+
+  static Future<String> rejectPlayer(String userId) async {
+    String message;
+    try {
+      debugPrint('start sending request');
+      Response response = await Api().dio.delete(
+        '/teams/reject-player',
+        data: {"userId": userId},
+      );
+
+      message = "Player rejected";
+
+      debugPrint('Player rejected: ${response.data}');
+    } on DioError catch (err, stack) {
+      debugPrint("error: $stack");
+      message = err.response?.data;
+    }
+    return message;
+  }
+
   static Future<List<Team>?> list() async {
     List<Team>? retrievedTeams = [];
 
