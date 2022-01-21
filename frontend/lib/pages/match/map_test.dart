@@ -49,40 +49,58 @@ class MapTest extends StatelessWidget {
       appBar: AppBar(
         title: const Text("map Test"),
       ),
-      body: FutureBuilder<Position>(
-        future: _determinePosition(),
-        builder: (_, snapshot) {
-          final position = snapshot.data;
-          if (snapshot.connectionState != ConnectionState.done) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (position == null) {
-            return const Center(child: Text("cannot access position"));
-          }
-          return FlutterMap(
-            options: MapOptions(
-              center: LatLng(position.latitude, position.longitude),
-              zoom: 13.0,
-            ),
-            layers: [
-              TileLayerOptions(
-                  urlTemplate:
-                      "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                  subdomains: ['a', 'b', 'c']),
-              MarkerLayerOptions(
-                markers: [
-                  Marker(
-                    width: 80.0,
-                    height: 80.0,
-                    point: LatLng(51.5, -0.09),
-                    builder: (ctx) => const FlutterLogo(),
-                  ),
-                ],
-              ),
-            ],
-          );
-        },
+      body: SizedBox(
+        width: 200,
+        height: 200,
+        child: FutureBuilder<Position>(
+          future: _determinePosition(),
+          builder: (_, snapshot) {
+            final position = snapshot.data;
+            if (snapshot.connectionState != ConnectionState.done) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            if (position == null) {
+              return const Center(child: Text("cannot access position"));
+            }
+            return MapTile(
+              position: LatLng(position.latitude, position.longitude),
+            );
+          },
+        ),
       ),
+    );
+  }
+}
+
+class MapTile extends StatelessWidget {
+  const MapTile({
+    required this.position,
+    Key? key,
+  }) : super(key: key);
+
+  final LatLng position;
+
+  @override
+  Widget build(BuildContext context) {
+    return FlutterMap(
+      options: MapOptions(
+        center: position,
+        zoom: 13.0,
+      ),
+      layers: [
+        TileLayerOptions(
+            urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+            subdomains: ['a', 'b', 'c']),
+        MarkerLayerOptions(
+          markers: [
+            Marker(
+                width: 80.0,
+                height: 80.0,
+                point: position,
+                builder: (ctx) => const Icon(Icons.place_outlined)),
+          ],
+        ),
+      ],
     );
   }
 }
