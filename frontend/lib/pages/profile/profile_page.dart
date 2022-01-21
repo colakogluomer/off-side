@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/models/user/user.dart';
 import 'package:frontend/pages/login.dart';
+import 'package:frontend/provider/user_change_notifier.dart';
 import 'package:frontend/services/user_service.dart';
 import 'package:frontend/utils/snackbar_service.dart';
 import 'package:frontend/widgets/user_card.dart';
+import 'package:provider/src/provider.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -27,49 +28,37 @@ class ProfilePageBody extends StatefulWidget {
 }
 
 class _ProfilePageBodyState extends State<ProfilePageBody> {
-  User? user;
-
-  Future<void> updateUser() async {
-    user = await UserService.getCurrentUser();
-  }
-
   @override
   void initState() {
-    updateUser();
+    context.read<CurrentUser>().updateUser();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return user != null
+    return context.watch<CurrentUser>().user != null
         ? Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: [
-                UserStackedCard(user: user!),
+                UserStackedCard(user: context.watch<CurrentUser>().user!),
                 ButtonBar(
                   alignment: MainAxisAlignment.end,
                   children: [
                     ElevatedButton(
                         onPressed: () async {
                           await UserService.logout();
-                          await updateUser();
-                          setState(() {
-                            user;
-                          });
+                          context.read<CurrentUser>().updateUser();
                         },
                         child: const Text("Logout")),
-                    user?.team != null
+                    context.watch<CurrentUser>().user?.team != null
                         ? ElevatedButton(
                             onPressed: () async {
                               String? message = await UserService.leaveTeam();
                               message ??= "You left the team.";
                               showSnackBar(context, message);
 
-                              await updateUser();
-                              setState(() {
-                                user;
-                              });
+                              context.read<CurrentUser>().updateUser();
                             },
                             child: const Text("Leave team"),
                           )
@@ -86,11 +75,7 @@ class _ProfilePageBodyState extends State<ProfilePageBody> {
                   context,
                   MaterialPageRoute(builder: (context) => LoginScreen()),
                 );
-                await updateUser();
-
-                setState(() {
-                  user;
-                });
+                context.read<CurrentUser>().updateUser();
               },
               child: const Text("Log in"),
             ),

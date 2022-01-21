@@ -18,8 +18,8 @@ class MatchHorizontalCard extends StatelessWidget {
         children: [
           ListTile(
             leading: const Icon(Icons.sports_soccer),
-            title: Text("${match.teams[0]} - ${match.teams[1]}"),
-            subtitle: Text(DateFormat('yyyy-MM-dd – kk:mm').format(match.date)),
+            title: Text("${match.teams[0].name} - ${match.teams[1].name}"),
+            subtitle: Text(DateFormat('yyyy-MM-dd  kk:mm').format(match.date)),
           ),
         ],
       ),

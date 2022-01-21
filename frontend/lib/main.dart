@@ -2,9 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:frontend/pages/match/match_page.dart';
 import 'package:frontend/pages/profile/profile_page.dart';
 import 'package:frontend/pages/team/team_page.dart';
+import 'package:frontend/provider/user_change_notifier.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => CurrentUser()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
