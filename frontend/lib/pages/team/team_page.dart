@@ -72,6 +72,8 @@ class NoTeamBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        if (context.watch<CurrentUser>().user != null)
+          TeamRequestsListView(context.watch<CurrentUser>().user!.teamRequests),
         ElevatedButton(
           onPressed: () {
             Navigator.push(
