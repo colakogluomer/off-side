@@ -66,6 +66,25 @@ class UserService {
     return retrievedUser;
   }
 
+  static Future<String> invite(String userId) async {
+    String message;
+    try {
+      debugPrint('start sending request');
+      Response response = await Api().dio.post(
+        '/teams/invite-player',
+        data: {"userId": userId},
+      );
+
+      message = "Invitation sent";
+
+      debugPrint('Team created: ${response.data}');
+    } on DioError catch (err, stack) {
+      debugPrint("error: $stack");
+      message = err.response?.data.toString() ?? "";
+    }
+    return message;
+  }
+
   static Future<Team?> team() async {
     Team? retrievedTeam;
     try {

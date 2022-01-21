@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/models/user/user.dart';
+import 'package:frontend/services/user_service.dart';
+import 'package:frontend/utils/snackbar_service.dart';
 import 'package:frontend/widgets/user_card.dart';
 
 class UserProfileScreen extends StatelessWidget {
@@ -21,12 +23,15 @@ class UserProfileScreen extends StatelessWidget {
             ButtonBar(
               alignment: MainAxisAlignment.end,
               children: [
-                ElevatedButton(
+                const ElevatedButton(
                   onPressed: null,
-                  child: const Text("Contact"),
+                  child: Text("Contact"),
                 ),
                 ElevatedButton(
-                  onPressed: null,
+                  onPressed: () async {
+                    final message = await UserService.invite(user.id);
+                    showSnackBar(context, message);
+                  },
                   child: const Text("Invite"),
                 ),
               ],

@@ -6,23 +6,26 @@ import 'package:frontend/widgets/user_screen.dart';
 
 class UserHorizontalCard extends StatelessWidget {
   const UserHorizontalCard({
+    this.onTap,
     required this.user,
     Key? key,
   }) : super(key: key);
 
   final User user;
+  final GestureTapCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     return Card(
       child: InkWell(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => UserProfileScreen(user: user)),
-          );
-        },
+        onTap: onTap ??
+            () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => UserProfileScreen(user: user)),
+              );
+            },
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [

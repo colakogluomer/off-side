@@ -22,9 +22,10 @@ class TeamHorizontalCard extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => TeamScreen(
-                      team: team,
-                    )),
+              builder: (context) => TeamScreen(
+                team: team,
+              ),
+            ),
           );
         },
         child: Column(
@@ -54,45 +55,45 @@ class TeamStackedCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       clipBehavior: Clip.antiAlias,
-      child: Column(
-        children: [
-          const SizedBox(height: 15.0),
-          ListTile(title: Text(team.name)),
-          const ListTile(
-            title: Text("Founder"),
-          ),
-          FutureBuilder<User>(
-              future: team
-                  .getFounder(), // a previously-obtained Future<String> or null
-              builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
-                if (snapshot.hasData && snapshot.data != null) {
-                  final user = snapshot.data;
-                  return user != null
-                      ? UserHorizontalCard(user: user)
-                      : Container();
-                } else if (snapshot.hasError) {
-                  return const Center(
-                    child: Icon(
-                      Icons.error_outline,
-                      color: Colors.red,
-                      size: 40,
-                    ),
-                  );
-                } else {
-                  return const SizedBox(
-                    width: 40,
-                    height: 40,
-                    child: CircularProgressIndicator(),
-                  );
-                }
-              }),
-          const ListTile(title: Text("Players")),
-          SizedBox(
-            height: 300.0,
-            child:
-                UserListBuilder(UserService.getUserListFromIds(team.playerIds)),
-          ),
-        ],
+      child: Flexible(
+        child: Column(
+          children: [
+            const SizedBox(height: 15.0),
+            ListTile(title: Text(team.name)),
+            const ListTile(
+              title: Text("Founder"),
+            ),
+            FutureBuilder<User>(
+                future: team
+                    .getFounder(), // a previously-obtained Future<String> or null
+                builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
+                  if (snapshot.hasData && snapshot.data != null) {
+                    final user = snapshot.data;
+                    return user != null
+                        ? UserHorizontalCard(user: user)
+                        : Container();
+                  } else if (snapshot.hasError) {
+                    return const Center(
+                      child: Icon(
+                        Icons.error_outline,
+                        color: Colors.red,
+                        size: 40,
+                      ),
+                    );
+                  } else {
+                    return const SizedBox(
+                      width: 40,
+                      height: 40,
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                }),
+            const ListTile(title: Text("Players")),
+            UserListViewBuilder(
+              UserService.getUserListFromIds(team.playerIds),
+            ),
+          ],
+        ),
       ),
     );
   }
