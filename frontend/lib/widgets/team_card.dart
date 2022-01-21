@@ -9,25 +9,28 @@ import 'package:frontend/widgets/user_card.dart';
 class TeamHorizontalCard extends StatelessWidget {
   const TeamHorizontalCard({
     required this.team,
+    this.onTap,
     Key? key,
   }) : super(key: key);
 
   final Team team;
+  final GestureTapCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     return Card(
       child: InkWell(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => TeamScreen(
-                team: team,
-              ),
-            ),
-          );
-        },
+        onTap: onTap ??
+            () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => TeamScreen(
+                    team: team,
+                  ),
+                ),
+              );
+            },
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [

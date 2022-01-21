@@ -21,6 +21,20 @@ class TeamService {
     return retrievedTeam;
   }
 
+  static Future<List<Team>> getTeamsListFromIds(List<String> ids) async {
+    List<Team> retrievedUsers = [];
+
+    for (final id in ids) {
+      final team = await getById(id);
+      if (team != null) {
+        retrievedUsers.add(team);
+      }
+    }
+
+    debugPrint('retrievedUsers ${retrievedUsers.toString()}');
+    return retrievedUsers;
+  }
+
   static Future<String> create(String name) async {
     String message;
     try {

@@ -66,6 +66,44 @@ class UserService {
     return retrievedUser;
   }
 
+  static Future<String> acceptTeam(String teamId) async {
+    String message;
+    try {
+      debugPrint('start sending request');
+      Response response = await Api().dio.post(
+        '/users/accept-team',
+        data: {"teamId": teamId},
+      );
+
+      message = "You joined the team!";
+
+      debugPrint('acceptPlayer: ${response.data}');
+    } on DioError catch (err, stack) {
+      debugPrint("error: $stack");
+      message = err.response?.data;
+    }
+    return message;
+  }
+
+  static Future<String> rejectTeam(String teamId) async {
+    String message;
+    try {
+      debugPrint('start sending request');
+      Response response = await Api().dio.delete(
+        '/users/reject-team',
+        data: {"teamId": teamId},
+      );
+
+      message = "Team invitation rejected";
+
+      debugPrint('team rejected: ${response.data}');
+    } on DioError catch (err, stack) {
+      debugPrint("error: $stack");
+      message = err.response?.data;
+    }
+    return message;
+  }
+
   static Future<String> invite(String userId) async {
     String message;
     try {
