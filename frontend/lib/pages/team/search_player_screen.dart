@@ -102,6 +102,7 @@ class UserRequestsListViewBuilder extends StatelessWidget {
                         onPressed: () async {
                           String message =
                               await TeamService.rejectPlayer(users[i].id);
+                          context.read<CurrentUser>().updateUser();
                           showSnackBar(context, message);
                           Navigator.of(context).pop();
                         },
@@ -111,6 +112,7 @@ class UserRequestsListViewBuilder extends StatelessWidget {
                         onPressed: () async {
                           String message =
                               await TeamService.acceptPlayer(users[i].id);
+                          context.read<CurrentUser>().updateUser();
                           showSnackBar(context, message);
                           Navigator.of(context).pop();
                         },

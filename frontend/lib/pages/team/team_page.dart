@@ -46,16 +46,21 @@ class TeamBody extends StatelessWidget {
         label: const Text("Add player"),
         icon: const Icon(Icons.add),
       ),
-      body: Column(
-        children: [
-          TeamStackedCard(
-            team: team,
-          ),
-          if (team.userRequests.isNotEmpty) const Text("User requests"),
-          UserRequestsListViewBuilder(
-            UserService.getUserListFromIds(team.userRequests),
-          ),
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            TeamStackedCard(
+              team: team,
+            ),
+            if (team.userRequests.isNotEmpty)
+              const ListTile(
+                title: Text("User requests"),
+              ),
+            UserRequestsListViewBuilder(
+              UserService.getUserListFromIds(team.userRequests),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -72,6 +77,13 @@ class NoTeamBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        context.watch<CurrentUser>().user?.teamRequests.isNotEmpty ?? false
+            ? const ListTile(
+                title: Text("Teams requests"),
+              )
+            : const ListTile(
+                title: Text("You don't have any teams requests"),
+              ),
         if (context.watch<CurrentUser>().user != null)
           TeamRequestsListView(context.watch<CurrentUser>().user!.teamRequests),
         ElevatedButton(
@@ -99,6 +111,7 @@ class NoTeamBody extends StatelessWidget {
                   TextButton(
                     onPressed: () {
                       Navigator.of(context).pop(_controller.text);
+                      context.read<CurrentUser>().updateUser();
                     },
                     child: const Text("Create"),
                   )

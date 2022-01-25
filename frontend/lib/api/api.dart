@@ -47,11 +47,13 @@ class AppInterceptors extends Interceptor {
 
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) async {
-    if ((err.response?.statusCode == HttpStatus.unauthorized &&
-        err.response?.data['error'] == "token expired")) {
-      if (await TokenRepository.storage.containsKey(key: 'refreshToken')) {
-        if (await refreshToken()) {
-          return handler.resolve(await _retry(err.requestOptions));
+    if (err.response?.statusCode == HttpStatus.unauthorized &&
+        err.response?.data is Map<String, dynamic>) {
+      if (err.response?.data['error'] == "token expired") {
+        if (await TokenRepository.storage.containsKey(key: 'refreshToken')) {
+          if (await refreshToken()) {
+            return handler.resolve(await _retry(err.requestOptions));
+          }
         }
       }
     }

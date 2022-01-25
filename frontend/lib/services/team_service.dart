@@ -57,7 +57,7 @@ class TeamService {
   static Future<String> acceptPlayer(String userId) async {
     String message;
     try {
-      debugPrint('start sending request');
+      debugPrint('start sending request, userId: $userId');
       Response response = await Api().dio.post(
         '/teams/accept-player',
         data: {"userId": userId},
@@ -68,6 +68,7 @@ class TeamService {
       debugPrint('acceptPlayer: ${response.data}');
     } on DioError catch (err, stack) {
       debugPrint("error: $stack");
+      debugPrint('acceptPlayer: ${err.response?.data}');
       message = err.response?.data;
     }
     return message;

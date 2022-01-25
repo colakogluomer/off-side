@@ -86,6 +86,7 @@ class TeamRequestsListView extends StatelessWidget {
                   onPressed: () async {
                     String message = await UserService.rejectTeam(teams[i].id);
                     showSnackBar(context, message);
+                    context.read<CurrentUser>().updateUser();
                     Navigator.of(context).pop();
                   },
                   child: const Text("Reject"),
@@ -94,6 +95,7 @@ class TeamRequestsListView extends StatelessWidget {
                   onPressed: () async {
                     String message = await UserService.acceptTeam(teams[i].id);
                     showSnackBar(context, message);
+                    context.read<CurrentUser>().updateUser();
                     Navigator.of(context).pop();
                   },
                   child: const Text("Accept"),

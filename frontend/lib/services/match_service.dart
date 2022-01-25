@@ -21,6 +21,27 @@ class MatchService {
     return retrievedMatch;
   }
 
+
+  static Future<String> sendMatchInvitation(String teamId) async {
+    String message;
+    try {
+      debugPrint('start sending request');
+      Response response = await Api().dio.post(
+        '/matches/send-match-invitation',
+        data: {"teamId": teamId},
+      );
+
+      message = "Invitation sent";
+
+      debugPrint('Team created: ${response.data}');
+    } on DioError catch (err, stack) {
+      debugPrint("error: $stack");
+      message = err.response?.data.toString() ?? "";
+    }
+    return message;
+  }
+
+
   static Future<MatchDto?> create(MatchDto match) async {
     MatchDto? retrievedMatch;
 
