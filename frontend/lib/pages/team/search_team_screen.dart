@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/models/team/team.dart';
+import 'package:frontend/pages/match/setup_match_screen.dart';
 import 'package:frontend/provider/user_change_notifier.dart';
 import 'package:frontend/services/match_service.dart';
 import 'package:frontend/services/team_service.dart';
@@ -88,8 +89,7 @@ class TeamRequestsListView extends StatelessWidget {
               actions: [
                 TextButton(
                   onPressed: () async {
-                    String message =
-                        await MatchService.rejectMatchInvitation(teams[i].id);
+                    String message = await UserService.rejectTeam(teams[i].id);
                     showSnackBar(context, message);
                     context.read<CurrentUser>().updateUser();
                     Navigator.of(context).pop();
@@ -98,8 +98,7 @@ class TeamRequestsListView extends StatelessWidget {
                 ),
                 TextButton(
                   onPressed: () async {
-                    String message = await MatchService.acceptMatchInvitation(
-                        teams[i].id, DateTime.now(), "Łódź");
+                    String message = await UserService.acceptTeam(teams[i].id);
                     showSnackBar(context, message);
                     context.read<CurrentUser>().updateUser();
                     Navigator.of(context).pop();
@@ -151,7 +150,8 @@ class MatchRequestsListView extends StatelessWidget {
                       TextButton(
                         onPressed: () async {
                           String message =
-                              await UserService.rejectTeam(teams[i].id);
+                              await MatchService.rejectMatchInvitation(
+                                  teams[i].id);
                           showSnackBar(context, message);
                           context.read<CurrentUser>().updateUser();
                           Navigator.of(context).pop();
@@ -160,10 +160,12 @@ class MatchRequestsListView extends StatelessWidget {
                       ),
                       TextButton(
                         onPressed: () async {
-                          String message =
-                              await UserService.acceptTeam(teams[i].id);
-                          showSnackBar(context, message);
-                          context.read<CurrentUser>().updateUser();
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    SetupMatchScreen(teams[i].id)),
+                          );
                           Navigator.of(context).pop();
                         },
                         child: const Text("Accept"),

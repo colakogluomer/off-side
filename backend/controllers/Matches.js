@@ -16,7 +16,7 @@ const getAll = async (req, res, next) => {
 
 const getMatches = async (req, res, next) => {
   try {
-    const team = await Teams.get(req.body.teamId);
+    const team = await Teams.get(req.params?.id);
     if (!team) throw new ApiError("no team", httpStatus.NOT_FOUND);
 
     const matches = await Matches.getCon({ teamsId: team._id });
@@ -93,7 +93,7 @@ const acceptMatchInvitation = async (req, res, next) => {
         httpStatus.UNAUTHORIZED
       );
 
-    const opposingTeam = await Users.get(req.body.teamId);
+    const opposingTeam = await Teams.get(req.body?.teamId);
     if (!opposingTeam)
       throw new ApiError("no opposing team", httpStatus.NOT_FOUND);
 

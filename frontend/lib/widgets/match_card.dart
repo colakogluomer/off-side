@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/models/match/match.dart';
-import 'package:frontend/pages/match/map_test.dart';
 import 'package:frontend/widgets/match_screen.dart';
 import 'package:frontend/widgets/team_card.dart';
 import 'package:intl/intl.dart';
-import 'package:latlong2/latlong.dart';
 
 class MatchHorizontalCard extends StatelessWidget {
   const MatchHorizontalCard({
@@ -62,20 +60,26 @@ class MatchStackedCard extends StatelessWidget {
             Column(
               children: [
                 TeamHorizontalCard(team: match.teams[0]),
-                const Text("-"),
-                TeamHorizontalCard(team: match.teams[0]),
+                const Text("vs"),
+                TeamHorizontalCard(team: match.teams[1]),
               ],
             ),
             ListTile(
-              title: Text(DateFormat('yyyy-MM-dd  kk:mm').format(match.date)),
+              title: const Text("Date"),
+              subtitle:
+                  Text(DateFormat('yyyy-MM-dd  kk:mm').format(match.date)),
             ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: 300,
-              child: MapTile(
-                position: LatLng(52, 21),
-              ),
-            )
+            ListTile(
+              title: const Text("Address"),
+              subtitle: Text(match.address),
+            ),
+            // SizedBox(
+            //   width: MediaQuery.of(context).size.width,
+            //   height: 300,
+            //   child: MapTile(
+            //     position: LatLng(52, 21),
+            //   ),
+            // )
           ],
         ),
       ),

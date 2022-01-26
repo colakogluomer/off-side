@@ -17,7 +17,7 @@ const {
 
 router.route("/").get(authenticate, getAll);
 router.route("/:id").delete(authenticate, remove);
-router.route("/match").get(authenticate, getMatches);
+router.route("/match/:id").get(authenticate, getMatches);
 router.route("/send-match-invitation").post(authenticate, sendMatchInvitation);
 router
   .route("/accept-match-invitation")
