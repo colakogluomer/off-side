@@ -14,35 +14,37 @@ class TeamScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Profile page'),
+        title: const Text('Team details'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            TeamStackedCard(team: team),
-            ButtonBar(
-              alignment: MainAxisAlignment.end,
-              children: [
-                ElevatedButton(
-                  onPressed: () async {
-                    String message =
-                        await MatchService.sendMatchInvitation(team.id);
-                    showSnackBar(context, message);
-                  },
-                  child: const Text("Challenge"),
-                ),
-                ElevatedButton(
-                  onPressed: () async {
-                    String? message = await TeamService.join(team.id);
-                    message ??= "You send request to ${team.name}";
-                    showSnackBar(context, message);
-                  },
-                  child: const Text("Join"),
-                ),
-              ],
-            ),
-          ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              TeamStackedCard(team: team),
+              ButtonBar(
+                alignment: MainAxisAlignment.end,
+                children: [
+                  ElevatedButton(
+                    onPressed: () async {
+                      String message =
+                          await MatchService.sendMatchInvitation(team.id);
+                      showSnackBar(context, message);
+                    },
+                    child: const Text("Challenge"),
+                  ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      String? message = await TeamService.join(team.id);
+                      message ??= "You send request to ${team.name}";
+                      showSnackBar(context, message);
+                    },
+                    child: const Text("Join"),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
