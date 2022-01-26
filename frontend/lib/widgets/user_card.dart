@@ -74,16 +74,7 @@ class UserStackedCard extends StatelessWidget {
                   ),
           ),
           const SizedBox(height: 15.0),
-          ListTile(
-            title: Text(user.name),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                Text('position'),
-                Text('level'),
-              ],
-            ),
-          ),
+          ListTile(title: Text(user.name), subtitle: Text(user.email)),
           if (user.team != null) TeamHorizontalCard(team: user.team!)
         ],
       ),

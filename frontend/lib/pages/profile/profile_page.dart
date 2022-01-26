@@ -13,7 +13,7 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('ProfilePage'),
+        title: const Text('Profile'),
       ),
       body: const ProfilePageBody(),
     );
@@ -73,7 +73,7 @@ class _ProfilePageBodyState extends State<ProfilePageBody> {
               onPressed: () async {
                 await Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => LoginScreen()),
+                  MaterialPageRoute(builder: (context) => const LoginScreen()),
                 );
                 context.read<CurrentUser>().updateUser();
               },

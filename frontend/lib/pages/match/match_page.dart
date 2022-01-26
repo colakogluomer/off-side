@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/models/match/match.dart';
-import 'package:frontend/pages/match/map_test.dart';
 import 'package:frontend/pages/match/match_list_screen.dart';
 import 'package:frontend/pages/team/search_team_screen.dart';
 import 'package:frontend/provider/user_change_notifier.dart';
@@ -89,15 +88,6 @@ class MatchPage extends StatelessWidget {
             ButtonBar(
               alignment: MainAxisAlignment.center,
               children: [
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const MapTest()),
-                    );
-                  },
-                  child: const Text("Map test"),
-                ),
                 ElevatedButton(
                   onPressed: () {
                     Navigator.push(

@@ -15,7 +15,7 @@ class SetupMatchScreen extends StatefulWidget {
 class _SetupMatchScreenState extends State<SetupMatchScreen> {
   String date = "";
   DateTime selectedDate = DateTime.now();
-  TimeOfDay selectedTime = TimeOfDay(hour: 12, minute: 30);
+  TimeOfDay selectedTime = const TimeOfDay(hour: 12, minute: 30);
 
   _selectDate(BuildContext context) async {
     final DateTime? selected = await showDatePicker(
@@ -61,7 +61,7 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Set up the match"),
+        title: const Text("Set up the match"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

@@ -3,6 +3,8 @@ import 'package:flutter_login/flutter_login.dart';
 import 'package:frontend/services/user_service.dart';
 
 class LoginScreen extends StatelessWidget {
+  const LoginScreen({Key? key}) : super(key: key);
+
   Future<String?> _authUser(LoginData data) {
     debugPrint('Name: ${data.name}, Password: ${data.password}');
     return UserService.login(data.name, data.password).then((value) => value);

@@ -13,9 +13,6 @@ class UserService {
 
     try {
       Response response = await Api().dio.get('/users/$id');
-
-      debugPrint('User retrieved: ${response.data}');
-
       retrievedUser = User.fromJson(response.data);
     } catch (e) {
       return null;
@@ -32,8 +29,6 @@ class UserService {
 
     try {
       Response response = await Api().dio.get('/users/$id');
-
-      debugPrint('User retrieved: ${response.data}');
 
       currentUser = User.fromJson(response.data);
     } catch (e) {
@@ -56,8 +51,6 @@ class UserService {
             data: user.toJson(),
           );
 
-      debugPrint('User created: ${response.data}');
-
       retrievedUser = User.fromJson(response.data);
     } catch (e) {
       return null;
@@ -69,15 +62,12 @@ class UserService {
   static Future<String> acceptTeam(String teamId) async {
     String message;
     try {
-      debugPrint('start sending request');
-      Response response = await Api().dio.post(
+      await Api().dio.post(
         '/users/accept-team',
         data: {"teamId": teamId},
       );
 
       message = "You joined the team!";
-
-      debugPrint('acceptPlayer: ${response.data}');
     } on DioError catch (err, stack) {
       debugPrint("error: $stack");
       message = err.response?.data;
@@ -88,15 +78,12 @@ class UserService {
   static Future<String> rejectTeam(String teamId) async {
     String message;
     try {
-      debugPrint('start sending request');
-      Response response = await Api().dio.delete(
+      await Api().dio.delete(
         '/users/reject-team',
         data: {"teamId": teamId},
       );
 
       message = "Team invitation rejected";
-
-      debugPrint('team rejected: ${response.data}');
     } on DioError catch (err, stack) {
       debugPrint("error: $stack");
       message = err.response?.data;
@@ -107,15 +94,12 @@ class UserService {
   static Future<String> invite(String userId) async {
     String message;
     try {
-      debugPrint('start sending request');
-      Response response = await Api().dio.post(
+      await Api().dio.post(
         '/teams/invite-player',
         data: {"userId": userId},
       );
 
       message = "Invitation sent";
-
-      debugPrint('Team created: ${response.data}');
     } on DioError catch (err, stack) {
       debugPrint("error: $stack");
       message = err.response?.data.toString() ?? "";
@@ -129,15 +113,11 @@ class UserService {
       Response response = await Api().dio.get(
             '/users/team',
           );
-      debugPrint("retrievedTeam team(): ${response.data}");
 
       retrievedTeam = Team.fromJson(response.data as Map<String, dynamic>);
-    } on DioError catch (_, e) {
-      debugPrint("error team(): ${e.toString()}");
+    } on DioError catch (_) {
       return null;
     }
-
-    debugPrint("retrievedTeam: $retrievedTeam");
     return retrievedTeam;
   }
 
@@ -167,7 +147,7 @@ class UserService {
         try {
           retrievedUsers.add(User.fromJson(rawUser as Map<String, dynamic>));
         } catch (e) {
-          debugPrint("error: ${e.toString()}");
+          debugPrint("error in parsing: ${e.toString()}");
         }
       }
     } catch (e) {
@@ -175,7 +155,6 @@ class UserService {
       return null;
     }
 
-    debugPrint('retrievedUsers ${retrievedUsers.toString()}');
     return retrievedUsers;
   }
 
@@ -189,7 +168,6 @@ class UserService {
       }
     }
 
-    debugPrint('retrievedUsers ${retrievedUsers.toString()}');
     return retrievedUsers;
   }
 
@@ -216,7 +194,6 @@ class UserService {
       'email': email,
       'password': password,
     });
-    debugPrint("response.status ${response.statusCode}, data ${response.data}");
 
     if (response.statusCode == HttpStatus.ok) {
       final tokens = response.data['tokens'];

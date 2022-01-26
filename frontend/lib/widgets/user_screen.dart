@@ -23,10 +23,6 @@ class UserProfileScreen extends StatelessWidget {
             ButtonBar(
               alignment: MainAxisAlignment.end,
               children: [
-                const ElevatedButton(
-                  onPressed: null,
-                  child: Text("Contact"),
-                ),
                 ElevatedButton(
                   onPressed: () async {
                     final message = await UserService.invite(user.id);

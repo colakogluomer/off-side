@@ -9,10 +9,7 @@ class MatchService {
     MatchDto? retrievedMatch;
 
     try {
-      debugPrint('=============================================$id');
       Response response = await Api().dio.get('/matches/$id');
-
-      debugPrint('Match retrieved: ${response.data}');
 
       retrievedMatch = MatchDto.fromJson(response.data);
     } catch (e) {
@@ -25,7 +22,6 @@ class MatchService {
   static Future<String> sendMatchInvitation(String teamId) async {
     String message;
     try {
-      debugPrint('start sending request');
       Response response = await Api().dio.post(
         '/matches/send-match-invitation',
         data: {"teamId": teamId},
@@ -33,7 +29,7 @@ class MatchService {
 
       message = "Invitation sent";
 
-      debugPrint('Team created: ${response.data}');
+      debugPrint('invitation sent: ${response.data}');
     } on DioError catch (err, stack) {
       debugPrint("error: $stack");
       message = err.response?.data.toString() ?? "";
@@ -45,9 +41,7 @@ class MatchService {
       String teamId, DateTime date, String address) async {
     String message;
     try {
-      debugPrint('start sending request');
-
-      debugPrint('acceptPlayer: ${{
+      debugPrint('accept match: ${{
         "teamId": teamId,
         "adress": address,
         "date": "${DateFormat('yyyy-MM-ddTkk:mm').format(date)}Z",
@@ -62,10 +56,10 @@ class MatchService {
         },
       );
 
-      debugPrint('start sending request');
       message = "Match invitation accepted";
     } on DioError catch (err, stack) {
-      debugPrint("error: ${err.response?.data}");
+      debugPrint("response: ${err.response?.data}");
+      debugPrint("error: $stack");
       message = err.response?.data;
     }
     return message;
@@ -86,29 +80,24 @@ class MatchService {
           retrievedMatches
               .add(MatchDto.fromJson(rawMatch as Map<String, dynamic>));
         } catch (e) {
-          debugPrint("error: ${e.toString()}");
+          debugPrint("error in parsing: ${e.toString()}");
         }
       }
-    } catch (e) {
-      debugPrint("error: ${e.toString()}");
+    } catch (_, stack) {
+      debugPrint("error: $stack");
     }
-
-    debugPrint('retrievedMatches ${retrievedMatches.toString()}');
     return retrievedMatches;
   }
 
   static Future<String> rejectMatchInvitation(String teamId) async {
     String message;
     try {
-      debugPrint('start sending request');
-      Response response = await Api().dio.delete(
+      await Api().dio.delete(
         '/matches/reject-match-invitation',
         data: {"teamId": teamId},
       );
 
       message = "Match invitation rejected";
-
-      debugPrint('team rejected: ${response.data}');
     } on DioError catch (err, stack) {
       debugPrint("error: $stack");
       message = err.response?.data;
@@ -147,16 +136,14 @@ class MatchService {
         try {
           retrievedMatches
               .add(MatchDto.fromJson(rawMatch as Map<String, dynamic>));
-        } catch (e) {
-          debugPrint("error: ${e.toString()}");
+        } catch (_, stack) {
+          debugPrint("error in parsing: $stack");
         }
       }
     } catch (e) {
-      debugPrint("error: ${e.toString()}");
       return null;
     }
 
-    debugPrint('retrievedMatches ${retrievedMatches.toString()}');
     return retrievedMatches;
   }
 }

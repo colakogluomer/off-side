@@ -8,10 +8,7 @@ class TeamService {
     Team? retrievedTeam;
 
     try {
-      debugPrint('=============================================$id');
       Response response = await Api().dio.get('/teams/$id');
-
-      debugPrint('Team retrieved: ${response.data}');
 
       retrievedTeam = Team.fromJson(response.data);
     } catch (e) {
@@ -31,22 +28,18 @@ class TeamService {
       }
     }
 
-    debugPrint('retrievedUsers ${retrievedUsers.toString()}');
     return retrievedUsers;
   }
 
   static Future<String> create(String name) async {
     String message;
     try {
-      debugPrint('start sending request');
-      Response response = await Api().dio.post(
+      await Api().dio.post(
         '/teams',
         data: {"name": name},
       );
 
       message = "Team created";
-
-      debugPrint('Team created: ${response.data}');
     } on DioError catch (err, stack) {
       debugPrint("error: $stack");
       message = err.response?.data;
@@ -57,7 +50,6 @@ class TeamService {
   static Future<String> acceptPlayer(String userId) async {
     String message;
     try {
-      debugPrint('start sending request, userId: $userId');
       Response response = await Api().dio.post(
         '/teams/accept-player',
         data: {"userId": userId},
@@ -65,10 +57,10 @@ class TeamService {
 
       message = "Player accepted";
 
-      debugPrint('acceptPlayer: ${response.data}');
+      debugPrint('accepted Player: ${response.data}');
     } on DioError catch (err, stack) {
       debugPrint("error: $stack");
-      debugPrint('acceptPlayer: ${err.response?.data}');
+      debugPrint('response: ${err.response?.data}');
       message = err.response?.data;
     }
     return message;
@@ -77,7 +69,6 @@ class TeamService {
   static Future<String> rejectPlayer(String userId) async {
     String message;
     try {
-      debugPrint('start sending request, userId: $userId');
       await Api().dio.delete(
         '/teams/reject-player',
         data: {"userId": userId},
@@ -103,16 +94,12 @@ class TeamService {
       for (final rawTeam in rawTeamList) {
         try {
           retrievedTeams.add(Team.fromJson(rawTeam as Map<String, dynamic>));
-        } catch (e) {
-          debugPrint("error: ${e.toString()}");
-        }
+        } catch (_) {}
       }
-    } catch (e) {
-      debugPrint("error: ${e.toString()}");
+    } catch (_) {
       return null;
     }
 
-    debugPrint('retrievedTeams ${retrievedTeams.toString()}');
     return retrievedTeams;
   }
 

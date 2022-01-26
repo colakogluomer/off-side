@@ -69,9 +69,6 @@ class AppInterceptors extends Interceptor {
       TokenRepository.setAccessToken(response.data);
       return true;
     } else {
-      // refresh token is wrong
-      //TokenRepository.setAccessToken(null);
-      //TokenRepository.setRefreshToken(null);
       return false;
     }
   }
