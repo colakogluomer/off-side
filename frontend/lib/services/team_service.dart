@@ -77,17 +77,16 @@ class TeamService {
   static Future<String> rejectPlayer(String userId) async {
     String message;
     try {
-      debugPrint('start sending request');
-      Response response = await Api().dio.delete(
+      debugPrint('start sending request, userId: $userId');
+      await Api().dio.delete(
         '/teams/reject-player',
         data: {"userId": userId},
       );
 
       message = "Player rejected";
-
-      debugPrint('Player rejected: ${response.data}');
     } on DioError catch (err, stack) {
       debugPrint("error: $stack");
+      debugPrint('Error when rejecting: ${err.response?.data}');
       message = err.response?.data;
     }
     return message;

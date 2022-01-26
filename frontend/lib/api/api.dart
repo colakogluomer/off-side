@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:frontend/api/token_repository.dart';
 import 'package:frontend/constants/settings.dart' as settings;
 
@@ -41,7 +40,6 @@ class AppInterceptors extends Interceptor {
       RequestOptions options, RequestInterceptorHandler handler) async {
     options.headers['Authorization'] =
         'Bearer ${await TokenRepository.getAccessToken()}';
-    debugPrint(options.headers.toString());
     return handler.next(options);
   }
 

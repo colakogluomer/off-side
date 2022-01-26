@@ -21,7 +21,6 @@ class MatchService {
     return retrievedMatch;
   }
 
-
   static Future<String> sendMatchInvitation(String teamId) async {
     String message;
     try {
@@ -41,6 +40,54 @@ class MatchService {
     return message;
   }
 
+  static Future<String> acceptMatchInvitation(
+      String teamId, DateTime date, String address) async {
+    String message;
+    try {
+      debugPrint('start sending request');
+
+      debugPrint('acceptPlayer: ${{
+        "teamId": teamId,
+        "adress": address,
+        "date": date.toString(),
+      }.toString()}');
+
+      await Api().dio.post(
+        '/matches/accept-match-invitation',
+        data: {
+          "teamId": teamId,
+          "adress": address,
+          "date": date.toString(),
+        },
+      );
+
+      debugPrint('start sending request');
+      message = "Match invitation accepted";
+    } on DioError catch (err, stack) {
+      debugPrint("error: $stack");
+      message = err.response?.data;
+    }
+    return message;
+  }
+
+  static Future<String> rejectMatchInvitation(String teamId) async {
+    String message;
+    try {
+      debugPrint('start sending request');
+      Response response = await Api().dio.delete(
+        '/matches/reject-match-invitation',
+        data: {"teamId": teamId},
+      );
+
+      message = "Match invitation rejected";
+
+      debugPrint('team rejected: ${response.data}');
+    } on DioError catch (err, stack) {
+      debugPrint("error: $stack");
+      message = err.response?.data;
+    }
+    return message;
+  }
 
   static Future<MatchDto?> create(MatchDto match) async {
     MatchDto? retrievedMatch;

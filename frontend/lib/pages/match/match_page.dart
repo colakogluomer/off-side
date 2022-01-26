@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:frontend/pages/match/map_test.dart';
 import 'package:frontend/pages/match/match_list_screen.dart';
 import 'package:frontend/pages/team/search_team_screen.dart';
+import 'package:frontend/provider/user_change_notifier.dart';
+import 'package:frontend/services/team_service.dart';
+import 'package:provider/src/provider.dart';
 
 class MatchPage extends StatelessWidget {
   const MatchPage({Key? key}) : super(key: key);
@@ -16,6 +19,22 @@ class MatchPage extends StatelessWidget {
         child: ButtonBar(
           alignment: MainAxisAlignment.center,
           children: [
+            const ListTile(
+              title: Text("Match requests"),
+            ),
+            if (context
+                    .watch<CurrentUser>()
+                    .user
+                    ?.team
+                    ?.matchRequests
+                    .isNotEmpty ??
+                false)
+              SizedBox(
+                height: 200.0,
+                child: MatchRequestsListView(TeamService.getTeamsListFromIds(
+                    context.watch<CurrentUser>().user?.team?.matchRequests ??
+                        [])),
+              ),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(

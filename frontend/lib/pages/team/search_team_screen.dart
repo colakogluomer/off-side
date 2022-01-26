@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/models/team/team.dart';
 import 'package:frontend/provider/user_change_notifier.dart';
+import 'package:frontend/services/match_service.dart';
 import 'package:frontend/services/team_service.dart';
 import 'package:frontend/services/user_service.dart';
 import 'package:frontend/utils/snackbar_service.dart';
@@ -80,11 +81,15 @@ class TeamRequestsListView extends StatelessWidget {
             context: context,
             builder: (context) => AlertDialog(
               title: const Text('Join the team'),
-              content: Expanded(child: TeamStackedCard(team: teams[i])),
+              content: SizedBox(
+                  width: 500,
+                  height: 400,
+                  child: TeamStackedCard(team: teams[i])),
               actions: [
                 TextButton(
                   onPressed: () async {
-                    String message = await UserService.rejectTeam(teams[i].id);
+                    String message =
+                        await MatchService.rejectMatchInvitation(teams[i].id);
                     showSnackBar(context, message);
                     context.read<CurrentUser>().updateUser();
                     Navigator.of(context).pop();
@@ -93,7 +98,8 @@ class TeamRequestsListView extends StatelessWidget {
                 ),
                 TextButton(
                   onPressed: () async {
-                    String message = await UserService.acceptTeam(teams[i].id);
+                    String message = await MatchService.acceptMatchInvitation(
+                        teams[i].id, DateTime.now(), "Łódź");
                     showSnackBar(context, message);
                     context.read<CurrentUser>().updateUser();
                     Navigator.of(context).pop();
@@ -106,6 +112,80 @@ class TeamRequestsListView extends StatelessWidget {
           context.read<CurrentUser>().updateUser();
         },
       ),
+    );
+  }
+}
+
+class MatchRequestsListView extends StatelessWidget {
+  const MatchRequestsListView(
+    this.futureList, {
+    this.onTap,
+    Key? key,
+  }) : super(key: key);
+
+  final GestureTapCallback? onTap;
+  final Future<List<Team>?> futureList;
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<List<Team>?>(
+      future: futureList,
+      builder: (BuildContext context, AsyncSnapshot<List<Team>?> snapshot) {
+        Widget child;
+        List<Team>? teams = snapshot.data;
+        if (snapshot.hasData && teams != null) {
+          child = ListView.builder(
+            itemCount: teams.length,
+            itemBuilder: (_, i) => TeamHorizontalCard(
+              team: teams[i],
+              onTap: () async {
+                await showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const Text('Accept or reject match request'),
+                    content: SizedBox(
+                        width: 500,
+                        height: 400,
+                        child: TeamStackedCard(team: teams[i])),
+                    actions: [
+                      TextButton(
+                        onPressed: () async {
+                          String message =
+                              await UserService.rejectTeam(teams[i].id);
+                          showSnackBar(context, message);
+                          context.read<CurrentUser>().updateUser();
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text("Reject"),
+                      ),
+                      TextButton(
+                        onPressed: () async {
+                          String message =
+                              await UserService.acceptTeam(teams[i].id);
+                          showSnackBar(context, message);
+                          context.read<CurrentUser>().updateUser();
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text("Accept"),
+                      ),
+                    ],
+                  ),
+                );
+                context.read<CurrentUser>().updateUser();
+              },
+            ),
+          );
+        } else if (snapshot.connectionState == ConnectionState.done) {
+          child = const Icon(
+            Icons.error_outline,
+            color: Colors.red,
+            size: 60,
+          );
+        } else {
+          child = const Center(child: CircularProgressIndicator());
+        }
+        return child;
+      },
     );
   }
 }
