@@ -19,7 +19,7 @@ app.use(express.json());
 app.use(helmet());
 app.use(fileUpload());
 
-app.listen(process.env.APP_PORT, () => {
+app.listen(process.env.PORT || process.env.APP_PORT, () => {
   console.log("server up");
   app.use("/teams", TeamRoutes);
   app.use("/users", UserRoutes);
