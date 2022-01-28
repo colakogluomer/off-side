@@ -3,8 +3,8 @@
 Mobile systems project 2021/2022.
 
 Tech Stack:
-  Backend --> NodeJS
-  Frontend --> Flutter
+Backend --> NodeJS
+Frontend --> Flutter
 
 App is configured to use heroku server: [https://offside-backend.herokuapp.com/](https://offside-backend.herokuapp.com/).
 
